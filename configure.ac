@@ -21,8 +21,8 @@ AC_PROG_LIBTOOL
 
 # Checks for header files.
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$prefix/lib/pkgconfig
-#PKG_CHECK_MODULES([parameter], [parameter])
-#PKG_CHECK_MODULES([PUTOOLS], [putools])
+PKG_CHECK_MODULES([PARAMETER], [parameter])
+PKG_CHECK_MODULES([PUTOOLS], [putools])
 AC_CHECK_HEADERS(parameter/parameter.h puTools/miString.h puTools/miTime.h,, AC_MSG_ERROR("missing header"))
 
 

@@ -1,0 +1,13 @@
+
+This is how you compile:
+./bootstrap.sh
+./configure
+make
+
+make
+
+To build backwords compatible one can do configure and make like this;
+./configure --prefix=/metno/local/ --includedir=/metno/local/include/puDatatypes
+make && make install
+
+

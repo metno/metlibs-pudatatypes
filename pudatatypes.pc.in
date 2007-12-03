@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @PACKAGE_NAME@
+Description: The puDataTypes Library
+Version: @VERSION@
+Libs: -L${libdir}/@PACKAGE_TARNAME@ -l@PACKAGE_TARNAME@
+Cflags: -I${includedir}

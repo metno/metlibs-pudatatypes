@@ -9,7 +9,6 @@ METNO_SET_VERSION_INFO
 AC_CONFIG_SRCDIR([src/miLine.cc])
 AC_CONFIG_HEADER([include/config.h])
 AC_CONFIG_MACRO_DIR([m4])
-AC_LANG(C++)
 
 # Checks for programs.
 AC_PROG_CXX
@@ -19,6 +18,8 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
+
+AC_LANG_PUSH(C++)
 
 # Checks for libraries.
 AC_CXX_HAVE_STD
@@ -50,6 +51,8 @@ AC_C_CONST
 
 # Checks for library functions.
 AC_CHECK_FUNCS([rint sqrt])
+
+AC_LANG_POP(C++)
 
 AC_CONFIG_FILES([Makefile
                  pudatatypes.pc

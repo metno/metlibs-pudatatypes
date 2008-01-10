@@ -7,3 +7,5 @@ pkg_include_HEADERS=miCoordinates.h\
 		miRegions.h  \
 		tsData.h  \
 		tsFunctions.h
+
+INSTALL=install -p # tells install to preserve timestamp

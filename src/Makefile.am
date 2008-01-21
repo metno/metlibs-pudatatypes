@@ -10,3 +10,4 @@ libpudatatypes_la_CXXFLAGS = ${parameter_CFLAGS} ${puTools_CFLAGS}
 libpudatatypes_la_LDFLAGS = ${parameter_LIBS} ${puTools_LIBS} ${VERSION_INFO}
 
 INSTALL=install -p # tells install to preserve timestamp
+DEFAULT_INCLUDES=-I${srcdir}/../include

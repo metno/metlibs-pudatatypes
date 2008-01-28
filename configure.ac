@@ -54,8 +54,15 @@ AC_CHECK_FUNCS([rint sqrt])
 
 AC_LANG_POP(C++)
 
+#making our own .pc file, checking that it is ok and forfilled
+AC_CONFIG_FILES(pudatatypes.pc)
+AC_OUTPUT
+
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:.
+PKG_CHECK_MODULES([own_dependencies], [${PACKAGE_TARNAME}])
+
 AC_CONFIG_FILES([Makefile
-                 pudatatypes.pc
                  include/Makefile
                  src/Makefile])
 AC_OUTPUT
+

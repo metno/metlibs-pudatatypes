@@ -9,7 +9,7 @@
 /* Define to 1 if you have the `parameter' library (-lparameter). */
 #undef HAVE_LIBPARAMETER
 
-/* Define to 1 if you have the `putools' library (-lputools). */
+/* Define to 1 if you have the `puTools' library (-lpuTools). */
 #undef HAVE_LIBPUTOOLS
 
 /* Define to 1 if you have the <memory.h> header file. */

@@ -6,6 +6,6 @@ includedir=@includedir@
 Name: @PACKAGE_NAME@
 Description: The puDataTypes Library
 Version: @VERSION@
-Requires: parameter >= 3.0.0, putools >= 3.0.0
+Requires: parameter >= 3.0.0, putools >= 3.1.0
 Libs: -L${libdir} -l@PACKAGE_NAME@
 Cflags: -I${includedir}

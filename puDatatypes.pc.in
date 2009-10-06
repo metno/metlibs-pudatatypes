@@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: @PACKAGE_NAME@
+Name: puDatatypes
 Description: The puDataTypes Library
 Version: @VERSION@
-Requires: parameter >= 3.0.0, putools >= 3.1.0
-Libs: -L${libdir} -l@PACKAGE_NAME@
+Requires: parameter >= 3.0.0, puTools >= 3.1.0
+Libs: -L${libdir} -lpuDatatypes
 Cflags: -I${includedir}

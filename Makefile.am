@@ -1,8 +1,38 @@
-SUBDIRS= include src
+# $Id: Makefile.am 2786 2009-09-23 11:39:02Z dages $
 
-ACLOCAL_AMFLAGS = -I m4 
+pkgname = puDatatypes
 
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = @PACKAGE_TARNAME@.pc
+include $(top_srcdir)/metlibs.mk
 
-$(pkgconfig_DATA): config.status
+lib_LTLIBRARIES = libpuDatatypes.la
+
+libpuDatatypes_la_SOURCES = \
+	miCoordinates.cc \
+	miLine.cc  \
+	miPosition.cc \
+	miRegions.cc
+
+libpuDatatypes_la_CPPFLAGS = \
+	${PARAMETER_CPPFLAGS} \
+	${PUTOOLS_CPPFLAGS}
+
+libpuDatatypes_la_LDFLAGS = \
+	${VERSION_INFO} \
+	${PARAMETER_LDFLAGS} \
+	${PUTOOLS_LDFLAGS}
+
+libpuDatatypes_la_LIBADD = \
+	${PARAMETER_LIBS} \
+	${PUTOOLS_LIBS}
+
+pkg_includedir = ${prefix}/include/puDatatypes
+
+pkg_include_HEADERS = \
+	miCoordinates.h\
+	miLine.h  \
+	miParameter.h  \
+	miPosition.h  \
+	miRegions.h  \
+	tsData.h  \
+	tsFunctions.h
+

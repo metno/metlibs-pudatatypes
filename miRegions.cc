@@ -1,6 +1,6 @@
 /*
   libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
-  
+
   $Id$
 
   Copyright (C) 2006 met.no
@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -21,7 +21,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -33,19 +33,22 @@
 #include <math.h>
 #include <list>
 
+using namespace std;
+using namespace miutil;
+
 const bool debugmode=false;
 
 
 miRegions::miBoundaryBox::miBoundaryBox(const miCoordinates& ll, const miCoordinates& ur)
 {
-  ll_lon = ll.iLon(); 
-  ll_lat = ll.iLat();  
+  ll_lon = ll.iLon();
+  ll_lat = ll.iLat();
   ur_lon = ur.iLon();
   ur_lat = ur.iLat();
-} 
+}
 
 
-miRegions::BoundaryComp 
+miRegions::BoundaryComp
 miRegions::miBoundaryBox::compare( miBoundaryBox& lhs)
 {
   if(ll_lat >  lhs.ur_lat)  return PASSANT;
@@ -55,7 +58,7 @@ miRegions::miBoundaryBox::compare( miBoundaryBox& lhs)
 
   if(ll_lat == lhs.ur_lat ) return HTANGENT;
   if(ur_lat == lhs.ll_lat ) return HTANGENT;
-  
+
   if(ll_lon == lhs.ur_lon ) return VTANGENT;
   if(ur_lon == lhs.ll_lon ) return VTANGENT;
 
@@ -98,7 +101,7 @@ miRegions::miBoundaryBox miRegions::getFuzzyBoundary(float deg) const
 
 
 
-void miRegions::clear() 
+void miRegions::clear()
 {
   corner.clear();
   border.clear();
@@ -117,14 +120,14 @@ void miRegions::addCorner(int lon,int lat)
 }
 
 
-void miRegions::addCorner(miCoordinates mc) 
+void miRegions::addCorner(miCoordinates mc)
 {
   if(cornerset.count(mc))
     return;
   cornerset.insert(mc);
   corner.push_back(mc);
   setBorders();
-} 
+}
 
 
 void miRegions::setCorners(const vector<miCoordinates> &c )
@@ -139,13 +142,13 @@ void miRegions::setCorners(const vector<miCoordinates> &c )
     corner.push_back(c[i]);
   }
   setBorders();
-} 
+}
 
 
 
 void miRegions::setBorders()
 {
-  
+
   if ( corner.size() < 3 )
     return;
 
@@ -157,7 +160,7 @@ void miRegions::setBorders()
 
   if(corn[0] != corn[corn.size() -1 ] )
     corn.push_back(corner[0]);
-  
+
   for( int i = 0; i < (corn.size()-1); i++) {
     tmp.set(corn[i],corn[i+1]);
     border.push_back(tmp);
@@ -243,7 +246,7 @@ vector<miRegions> miRegions::triangles()
 
   miRegions tmp;
   int curr=0,next,prev;
-    
+
   while(!tcorners.empty()) {
 
     if(tcorners.size() == 3) {
@@ -251,7 +254,7 @@ vector<miRegions> miRegions::triangles()
       triangles_.push_back(tmp);
       break;
     }
-    
+
     if(++curr >= tcorners.size()) {
       curr=0;
       prev=tcorners.size()-1;
@@ -263,30 +266,30 @@ vector<miRegions> miRegions::triangles()
 
     if(prev<0)
       prev=tcorners.size()-1;
-    
+
     if( next >= tcorners.size() )
       next=0;
 
     miCoordinates a = tcorners[curr] - tcorners[prev];
     miCoordinates b = tcorners[next] - tcorners[curr];
-    
+
     if( a.cross(b) > 0  ) {
- 
+
       t[0]=tcorners[prev];
       t[1]=tcorners[curr];
       t[2]=tcorners[next];
-    
+
       tmp.setCorners(t);
 
       bool inside=false;
-      
+
       for(int j=0;j<tcorners.size();j++)
 	if(j!=prev && j!=curr && j!= next)
 	  if(tmp.isInside(tcorners[j])) {
 	    inside=true;
 	    break;
 	  }
-	
+
       if(!inside) {
 	triangles_.push_back(tmp);
 	tcorners.erase(tcorners.begin()+curr);
@@ -307,16 +310,16 @@ miRegions miRegions::subregion(float c,miString sector, bool& inside,int rnd) co
   inside = false;
 
   if(sector=="N" || sector=="S") {
-    
+
     if(c >= urc.dLat() || c <= llc.dLat() )
       return *this;
-    
+
     beg  = miCoordinates(llc.dLon(),c);
     end  = miCoordinates(urc.dLon(),c);
 
   } else if ( sector=="E" || sector=="W" ) {
-  
-    if(c >= urc.dLon() || c <= llc.dLon() ) 
+
+    if(c >= urc.dLon() || c <= llc.dLon() )
       return *this;
 
     beg  = miCoordinates(c,llc.dLat());
@@ -324,7 +327,7 @@ miRegions miRegions::subregion(float c,miString sector, bool& inside,int rnd) co
 
   } else
     return *this;
-  
+
   miLine clipline(beg,end);
 
   if(no_of_crosses(clipline) != 2) /// itchy polygon possibly several ...
@@ -350,7 +353,7 @@ miRegions miRegions::subregion(float c,miString sector, bool& inside,int rnd) co
       }
       sub.push_back(tmp);
     }
-	   
+
     if( isPartOfSubregion(clipline, border[i].end(),sector))
       sub.push_back(border[i].end());
   }
@@ -383,21 +386,21 @@ bool miRegions::isPartOfSubregion(const miLine& clipline,
 
 /// in a convex polygon the cross product does
 /// not change direction
-bool miRegions::isConvex() 
+bool miRegions::isConvex()
 {
   if(corner.size() <  3) return false;
   if(corner.size() == 3) return true;
-  
+
    miCoordinates a = corner[1] - corner[0];
    miCoordinates b = corner[2] - corner[1];
-   
+
    double c1 = a.cross(b);
 
    for ( int i = 2; i < corner.size()-1; i++ ) {
      a=b;
      b = corner[i+1] - corner[i];
      double c2 = a.cross(b);
-     
+
      if( (c1*c2) < 0 ) return false;
    }
    return true;
@@ -411,9 +414,9 @@ bool miRegions::isCounterClockwise()
 {
   if(corner.size() < 3)
     return true;
-  
+
   double crossproduct=0;
- 
+
   if( isConvex() ) {
     for(int i=1;i<corner.size()-2;i++) {
       miCoordinates a = corner[i] - corner[i-1];
@@ -422,7 +425,7 @@ bool miRegions::isCounterClockwise()
       if(crossproduct!=0)
 	break;
     }
-    
+
     return (crossproduct > 0);
   }
   double A=0;
@@ -432,14 +435,14 @@ bool miRegions::isCounterClockwise()
   // to be positive to be counter clockwise
 
   for (; i<corner.size()-1; i++ )
-    A +=  (corner[i].dLon() * corner[i+1].dLat() ) 
+    A +=  (corner[i].dLon() * corner[i+1].dLat() )
       -   (corner[i].dLat() * corner[i+1].dLon() );
-  
+
   i=corner.size()-1;
 
   // if the polygon is not closed - close it !
-  if(corner[i] != corner[0] ) 
-    A +=  (corner[i].dLon() * corner[0].dLat() ) 
+  if(corner[i] != corner[0] )
+    A +=  (corner[i].dLon() * corner[0].dLat() )
       -   (corner[i].dLat() * corner[0].dLon() );
 
 
@@ -448,12 +451,12 @@ bool miRegions::isCounterClockwise()
 }
 
 
-void miRegions::turnCounterClockwise() 
+void miRegions::turnCounterClockwise()
 {
   if(isCounterClockwise())
     return;
-  
-  if(debugmode) cerr << "region is Clockwise, turning" 
+
+  if(debugmode) cerr << "region is Clockwise, turning"
 		     << corner.size() << " points" << endl;
 
   vector<miCoordinates> corn;
@@ -489,18 +492,18 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
   miBoundaryBox lboundary = lhs.getBoundary();
   miBoundaryBox rboundary = rhs.getBoundary();
 
- 
+
   BoundaryComp  bc= lboundary.compare(rboundary);
 
   // check if lhs and rhs are joinable at all ...
 
   if(bc == PASSANT) {
-    if(debugmode) cerr << "false / passant" << endl;  
+    if(debugmode) cerr << "false / passant" << endl;
     return false;
   }
   rhs.turnCounterClockwise();
   lhs.turnCounterClockwise();
-  
+
   vector<miCoordinates> firstc  = lhs.getCorners();
   vector<miCoordinates> secondc = rhs.getCorners();
 
@@ -516,7 +519,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
   /// search for a corner in firstR which is out of
   /// secondR's boundary..
 
-  for(f=0;f<firstc.size();f++) 
+  for(f=0;f<firstc.size();f++)
     if(!rboundary.isInside(firstc[f])) {
       foundcorner=true;
       break;
@@ -524,19 +527,19 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 
   /// firstR is surounded by secondR - swap firstR and secondR
   /// and try again
- 
+
   if(!foundcorner) {
     if(debugmode) cerr << "Have to Swap ..." << endl;
     swap(firstc,secondc);
     firstR  = rhs;
     secondR = lhs;
-    for(f=0;f<firstc.size();f++) 
+    for(f=0;f<firstc.size();f++)
     if(!lboundary.isInside(firstc[f])) {
       foundcorner=true;
       break;
     }
   }
-  
+
   miBoundaryBox fFuzzy   = firstR.getFuzzyBoundary(0.2);
   miBoundaryBox sFuzzy   = secondR.getFuzzyBoundary(0.2);
 
@@ -544,16 +547,16 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 
   /* firstR and secondR have identical boundary boxes.
      the are possibly identical, but are too uncertain to
-     join */ 
-    
+     join */
+
   if(!foundcorner) {
-    if(debugmode) cerr << "false / identical boxes" << endl;  
+    if(debugmode) cerr << "false / identical boxes" << endl;
     return false;
   }
-    
+
   bool foundcross1=false;
   bool foundcross2=false;
-  
+
   list<miCoordinates> res;
 
   int s1,s2;
@@ -574,24 +577,24 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 	  foundcross1=true;
 	  firstcross1=secondc[s1];
 	  firstcross2=firstc[f1];
-	  if(debugmode) cerr << "Firstcross at : " << f1 
+	  if(debugmode) cerr << "Firstcross at : " << f1
 			     << " from " << firstc.size() << endl
-			     << s1 <<  " from " << secondc.size() << endl; 
-	    	  
+			     << s1 <<  " from " << secondc.size() << endl;
+
 	  break;
 	}
       }
-    if(foundcross1) 
+    if(foundcross1)
       break;
   }
-  
+
   if(!foundcross1) {
-    if(debugmode) cerr << "false / no cross1" << endl;  
+    if(debugmode) cerr << "false / no cross1" << endl;
     return false;
   }
   // after the cross - walk along secondc until the next cross ...
   // check first that there is enought space between first cross and second cross...
-  
+
 
   for(f2=f-1;f2>=0;f2--) {
     res.push_front(firstc[f2]);
@@ -600,13 +603,13 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
       for(s2=0;s2<secondc.size();s2++) {
 	if( firstc[f2].isCloserThan(secondc[s2],tolerance)) {
 
-	  if(!firstcross1.isCloserThan(secondc[s2],tolerance)  &&  
+	  if(!firstcross1.isCloserThan(secondc[s2],tolerance)  &&
 	     !firstcross2.isCloserThan(firstc[f2],tolerance)   ){
-	    
-	    if(debugmode) cerr << "secondcross at : "       << f2 
+
+	    if(debugmode) cerr << "secondcross at : "       << f2
 			       << " from " << firstc.size() << endl
 			       << s2 <<  " from " << secondc.size() << endl;
-		
+
 	    foundcross2=true;
 	    break;
 	  }
@@ -618,7 +621,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
       break;
   }
 
- 
+
   if(!foundcross2) {
     for(f2=firstc.size()-1;f2>=0;f2--) {
       res.push_front(firstc[f2]);
@@ -630,13 +633,13 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 
 	  if( firstc[f2].isCloserThan(secondc[s2],tolerance)) {
 
- 	    if(!firstcross1.isCloserThan(secondc[s2],tolerance)  &&  
+ 	    if(!firstcross1.isCloserThan(secondc[s2],tolerance)  &&
 	       !firstcross2.isCloserThan(firstc[f2],tolerance)   ){
-	      
-	      if(debugmode) cerr << "secondcross at : "       << f2 
+
+	      if(debugmode) cerr << "secondcross at : "       << f2
 				 << " from " << firstc.size() << endl
 				 << s2 <<  " from " << secondc.size() << endl;
-	    
+
 	      foundcross2=true;
 	      break;
 	    }
@@ -646,7 +649,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 	break;
     }
   }
-  
+
   if(!foundcross2) {
     if(debugmode) cerr << "false / !cross2" << endl;
     return false;
@@ -660,28 +663,28 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
   bool complete=false;
 
   for(int s=s1;s<secondc.size();s++ ) {
-    res.push_back(secondc[s]); 
+    res.push_back(secondc[s]);
     if(s==s2) {
       complete=true;
-      break; 
+      break;
     }
   }
-  
-  if(!complete) 
+
+  if(!complete)
     for(int s=0;s<=s2;s++ )
       res.push_back(secondc[s]);
 
   vector<miCoordinates> oldcorners    = corner;
   set<miCoordinates>    oldcornerset  = cornerset;
   int                   oldarea       = area_;
-  vector<miRegions>     oldtriangles  = triangles_; 
+  vector<miRegions>     oldtriangles  = triangles_;
 
   // when  you join 2 regions with at least 3 corners
   // and the regions are not complete identical -
   // the result must have at least 4 corners ...
 
   if(res.size() <  4 ) {
-    if(debugmode) cerr << "false / size < 4" << endl;  
+    if(debugmode) cerr << "false / size < 4" << endl;
     return false;
   }
 
@@ -690,9 +693,9 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
   triangles_.clear();
   corner.clear();
   setOrigin(lhs.origo());
- 
+
   cornerset.clear();
-  
+
   for(;itr!=res.end();itr++) {
     if(cornerset.count(*itr))
       continue;
@@ -701,23 +704,23 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
   }
 
   if(corner.size() < 4) {
-    if(debugmode) cerr << "false / size < 4 after" << endl;  
+    if(debugmode) cerr << "false / size < 4 after" << endl;
     cornerset = oldcornerset;
     corner    = oldcorners;
     return false;
   }
-    
+
   setBorders();
-  
+
   turnCounterClockwise();
-  
+
   if(debugmode) cerr << "Successful join: " << size() << " corners" << endl;
 
   return true;
 }
 
 
-int miRegions::area() 
+int miRegions::area()
 {
   if(!isRegion() ) {
     area_=0;
@@ -738,7 +741,7 @@ int miRegions::area()
 
     return area_;
   }
-  
+
   if(!area_) {
     vector<miRegions> t = triangles();
     for(int i=0;i<t.size();i++)
@@ -755,13 +758,13 @@ bool miRegions::isInside( const miRegions& lhs, int threshold) const
 {
   miBoundaryBox lboundary = lhs.getBoundary();
   miBoundaryBox rboundary = getBoundary();
-  
+
 
   // compare the boundaries ... if false -> they are not even close
   // together
 
   BoundaryComp  bc= lboundary.compare(rboundary);
-  
+
   if(bc == PASSANT)
     return false;
 
@@ -770,20 +773,20 @@ bool miRegions::isInside( const miRegions& lhs, int threshold) const
   vector<miCoordinates> c=lhs.getCorners();
 
   bool isCompleteInside=true;
-  
+
   for(int i=0; i<c.size();i++ )
     if(!isInside(c[i])) {
       isCompleteInside=false;
       break;
     }
 
-  if(isCompleteInside) 
+  if(isCompleteInside)
     return true;
 
   // compare internal boundary Grid ...
-  
+
   c=lhs.getBoundaryGrid(15);
-  
+
   float total= c.size();
 
   float match=0;
@@ -794,21 +797,21 @@ bool miRegions::isInside( const miRegions& lhs, int threshold) const
 
   // at least tolerance% of the boundary grid of the inside area
   // should be inside the big area ..
- 
+
   if(debugmode) cerr <<"ISINSIDE checking if \"" << lhs.regName() << "\" is inside of \""
-		     << regName() << "\" : " << match <<":"<< total 
+		     << regName() << "\" : " << match <<":"<< total
 		     <<":"<<  match / total * 100 << "%";
 
- 
+
   if ( ( (match / total) * 100 ) < threshold ){
     if ( debugmode ) cerr << "... NOT OK" << endl;
     return false;
   }
-  
+
   if ( debugmode ) cerr << "... OK" << endl;
   return true;
 }
- 
+
 
 bool miRegions::cornerCompare( vector<miCoordinates> c) const
 {
@@ -816,7 +819,7 @@ bool miRegions::cornerCompare( vector<miCoordinates> c) const
 
   if(c.size() != corner.size() )
     return false;
-  
+
   for(int i=0;i<c.size();i++)
     s.insert(c[i]);
 
@@ -837,7 +840,7 @@ bool miRegions::isIdentical( miRegions& lhs,int threshold) const
 
   if(!isRegion() || !lhs.isRegion())
      return false;
-     
+
   // Are the 2 regions complete identical (check the corners)
   // unlikely but possible - in that case the areas are really identical
 
@@ -854,18 +857,18 @@ bool miRegions::isIdentical( miRegions& lhs,int threshold) const
   if( upper_right.distance(lhs.upper_right_corner()) > 50 ) return false;
   if( lower_left.distance(lhs.lower_left_corner())   > 50 ) return false;
 
-  
+
   // 2) put a grid over the boundary box (8x8)
   //    check how many of the grid points in
   //    region A are in region B
- 
+
   int incr=8;
   vector<miCoordinates> gridPoints = getBoundaryGrid(incr);
-  
+
   float total=gridPoints.size();
 
   // we need some grid points to make this tests ... to garantuee
-  // enough points we increase the gridpoints until we find at least 
+  // enough points we increase the gridpoints until we find at least
   // 20 points inside the area ...
 
   if(total<20)
@@ -874,22 +877,22 @@ bool miRegions::isIdentical( miRegions& lhs,int threshold) const
       gridPoints = getBoundaryGrid(incr);
       total=gridPoints.size();
     }
-  
+
   float match=0;
   for(int i=0;i<gridPoints.size(); i++ )
     if(lhs.isInside(gridPoints[i]))
       match++;
 
- 
+
 
   if( (match / total * 100 ) < threshold )
     return false;
 
-  if (debugmode) cerr << "first test gridpoints" << match << "/" 
+  if (debugmode) cerr << "first test gridpoints" << match << "/"
 		       << total << " :  " << match / total*100  << endl;
 
   // try vice versa
-  
+
   gridPoints = lhs.getBoundaryGrid(incr);
   total      = gridPoints.size();
   if(total<20)
@@ -898,16 +901,16 @@ bool miRegions::isIdentical( miRegions& lhs,int threshold) const
       gridPoints = lhs.getBoundaryGrid(incr);
       total      = gridPoints.size();
     }
-  
+
   match=0;
   for(int i=0;i<gridPoints.size(); i++ )
     if(isInside(gridPoints[i]))
       match++;
-  
+
   if( (match / total * 100 ) < threshold )
     return false;
-  
-  if(debugmode) cerr << "second test gridpoints" << match << "/" 
+
+  if(debugmode) cerr << "second test gridpoints" << match << "/"
 		     << total << " :  " << match / total*100  << endl;
 
 
@@ -919,22 +922,22 @@ bool miRegions::isIdentical( miRegions& lhs,int threshold) const
 vector<miCoordinates> miRegions::getBoundaryGrid(int noOfGrids, bool inside) const
 {
   miCoordinates incr= ( upper_right - lower_left ) / float(noOfGrids);
-  
+
   vector<miCoordinates> boundaryGrid;
-  
+
   float latAdd=incr.dLat();
   float lonAdd=incr.dLon();
 
-  for( int i=1;i<noOfGrids;i++ ) 
+  for( int i=1;i<noOfGrids;i++ )
     for(int j=1;j<noOfGrids;j++) {
       miCoordinates gridPoint = lower_left + miCoordinates(lonAdd*float(i),latAdd*float(j));
-     
+
       if(inside)
 	if(!isInside(gridPoint))
 	  continue;
 
       boundaryGrid.push_back(gridPoint);
-    } 
+    }
 
   return boundaryGrid;
 }

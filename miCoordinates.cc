@@ -1,6 +1,6 @@
 /*
   libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
-  
+
   $Id$
 
   Copyright (C) 2006 met.no
@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -21,7 +21,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -30,6 +30,10 @@
 
 #include "miCoordinates.h"
 #include <sstream>
+
+
+using namespace std;
+using namespace miutil;
 
 // --- constructor stuff ---
 
@@ -44,7 +48,7 @@ const double rEarth = 6370;
 
 coor::coor(const int& i)
 {
-  deg = i/10000; 
+  deg = i/10000;
   cmin = i - (deg * 10000 );
   deg%=360;
 }
@@ -64,7 +68,7 @@ void coor::addCmin( const int& rhs)
 {
   int toDeg = 0;
   cmin += rhs;
-  
+
    if(cmin >= 6000 ){
     toDeg = cmin/6000;
     cmin  = cmin%6000;
@@ -80,7 +84,7 @@ bool coor::round(int r, bool best)
 {
   if( r<10 )
     return false;
-  
+
 
   if( r>6000 ) {
     deg+= ((cmin > 3000)==best ? 1 : 0 );
@@ -89,7 +93,7 @@ bool coor::round(int r, bool best)
 
     int   pre =       r/2;
     float fpre=(float(r)/2)-pre+1;
-   
+
     int front=cmin/r;
     int tail=cmin%r;
 
@@ -156,24 +160,24 @@ miCoordinates::miCoordinates( const float& lon, const float& lat,int rnd )
 }
 
 miCoordinates::miCoordinates( const coor& lon, const coor& lat,int rnd )
- : lon_(lon), lat_(lat) 
+ : lon_(lon), lat_(lat)
 {
   if(rnd) round(rnd);
 }
 
 // --- transformations ---
 
-float miCoordinates::fCoor( const coor& l ) const 
+float miCoordinates::fCoor( const coor& l ) const
 {
   return (float(l.cmin)/6000 ) + float(l.deg);
 }
 
-int miCoordinates::iCoor( const coor& l) const 
+int miCoordinates::iCoor( const coor& l) const
 {
   return (l.deg*10000) + l.cmin;
 }
 
-coor miCoordinates::invert(const coor& outc ) const 
+coor miCoordinates::invert(const coor& outc ) const
 {
   coor tmp = outc;
   tmp.deg*=(-1);
@@ -181,7 +185,7 @@ coor miCoordinates::invert(const coor& outc ) const
   return tmp;
 }
 
-double miCoordinates::toRad( const coor& c ) const 
+double miCoordinates::toRad( const coor& c ) const
 {
   double rad;
   rad  =   float(c.deg)/ 180 ;
@@ -191,8 +195,8 @@ double miCoordinates::toRad( const coor& c ) const
 }
 
 
-void miCoordinates::round(int r) 
-{  
+void miCoordinates::round(int r)
+{
   if(lon_.round(r)) lat_.round(r);
 }
 
@@ -220,19 +224,19 @@ vector<miCoordinates> miCoordinates::roundedGrid(int r)
 
 
 
-int miCoordinates::km2deg( int distkm , bool isLon ) const 
+int miCoordinates::km2deg( int distkm , bool isLon ) const
 {
   coor zero;
   int result,tmpInt;
- 
+
   if(isLon)
     zero = lat_;
-  
+
   result =int(float(distkm)/(1.852 * cos( toRad( zero ) ) )*100);
-  
+
   if(result >= 6000 ){
     tmpInt = result/6000;
-    tmpInt*= 10000; 
+    tmpInt*= 10000;
     result = result%6000;
     result+=tmpInt;
   }
@@ -280,7 +284,7 @@ miCoordinates operator/(miCoordinates lhs,float rhs)
 
 
 
-bool operator==( const miCoordinates& lhs, const miCoordinates& rhs) 
+bool operator==( const miCoordinates& lhs, const miCoordinates& rhs)
 {
   if (lhs.iLon() != rhs.iLon() )
     return false;
@@ -290,7 +294,7 @@ bool operator==( const miCoordinates& lhs, const miCoordinates& rhs)
   return true;
 }
 
-bool operator!=( const miCoordinates& lhs, const miCoordinates& rhs) 
+bool operator!=( const miCoordinates& lhs, const miCoordinates& rhs)
 {
   return !(lhs == rhs );
 }
@@ -311,7 +315,7 @@ bool operator<( const miCoordinates& lhs, const miCoordinates& rhs)
 
 void miCoordinates::addLon(coor rhs)
 {
-  
+
   rhs.deg%=360;
 
   lon_.addCmin(rhs.cmin);
@@ -351,14 +355,14 @@ void miCoordinates::addLat(coor rhs)
     fc = 180 - lat_.deg;
     addLon( turn );
   }
-  
+
   if (fc <= - 90 ){
     fc+=180;
     fc*=(-1);
     addLon( turn );
   }
   lat_ = coor(fc);
-  
+
 }
 
 
@@ -394,7 +398,7 @@ bool miCoordinates::decode(const miString& str)
   return false;
 }
 
-miString miCoordinates::sLon() 
+miString miCoordinates::sLon()
 {
  ostringstream out;
  char lonp = ((iLon() < 0) ? 'W': 'E');
@@ -405,7 +409,7 @@ miString miCoordinates::sLon()
 }
 
 
-miString miCoordinates::sLat() 
+miString miCoordinates::sLat()
 {
  ostringstream out;
  char latp = ((iLat() < 0) ? 'S': 'N');
@@ -426,7 +430,7 @@ ostream& operator<<(ostream& out, const miCoordinates& rhs)
 double miCoordinates::sekant(double ang) const
 {
   double res,hal;
- 
+
   hal = ( M_PI - ang ) / 2;
   res = sin(ang) / sin(hal);
   return res;
@@ -440,27 +444,27 @@ int miCoordinates::distance( const miCoordinates& in) const
   double a,b,c,dist;
   double alpha;
   double rlo,rla;
-  
+
   angle_c = cos(in.rLat()) * cos(rLat());
-  
+
   miCoordinates diff = *this - in ;
-  
+
   rlo = fabs(diff.rLon() );
   rla = fabs(diff.rLat() );
-  
+
   if ( rlo< 0.000000001 )
-    alpha = rla;  
+    alpha = rla;
 
   else if ( rla < 0.000000001)
     alpha = sqrt( angle_c ) * rlo;
 
   else {
-    
+
     a = sekant(rlo );
     b = sekant(rla );
-  
+
     c = sqrt( a*a*angle_c + b*b );
-    
+
     alpha = 2 * asin( c / 2 );
   }
 
@@ -472,7 +476,7 @@ int miCoordinates::distance( const miCoordinates& in) const
   return static_cast<int>(rint(dist));
 }
 
-double miCoordinates::cross(const miCoordinates& c) const 
+double miCoordinates::cross(const miCoordinates& c) const
 {
   double cro  = ( dLon() * c.dLat() ) - ( dLat() *  c.dLon() );
   return cro;

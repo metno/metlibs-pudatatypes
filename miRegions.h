@@ -1,6 +1,6 @@
 /*
   libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
-  
+
   $Id$
 
   Copyright (C) 2006 met.no
@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -21,7 +21,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -39,35 +39,35 @@
 #include <vector>
 #include <set>
 
-using namespace std; 
+using namespace std;
 
 /// class containing a region withy corners name etc.
 /** The object can be compared to other regions and has functionallity to:
- *  - join and splitt regions 
- *  - check areal 
+ *  - join and splitt regions
+ *  - check areal
  *  - check boundary boxes
  *  - and more ..
  *
 */
 class miRegions {
   typedef enum BoundaryComp { INTERSECTION, HTANGENT, VTANGENT, PASSANT };
-  
-  /// Struct to keep a boundary box for a miRegion 
+
+  /// Struct to keep a boundary box for a miRegion
   /** The struct contains a lower left corner and an upper right corner
    *
   */
   typedef struct miBoundaryBox {
     int ll_lon;  ///< lower left  corner
-    int ll_lat;  
+    int ll_lat;
     int ur_lon;  ///< upper right corner
     int ur_lat;
-  
+
     /// check how two Boundary boxes relate to another
     BoundaryComp compare(miBoundaryBox&);
 
     /// check if a coordinate is inside the box with a tolerance in centiseconds
     bool         isInside(miCoordinates&, int tolerance=0);
-    
+
     miBoundaryBox() {}
     miBoundaryBox(const miCoordinates& ll, const miCoordinates& ur);
 
@@ -76,7 +76,7 @@ class miRegions {
 private:
   vector<miCoordinates> corner;
   vector<miLine>        border;
-  miString              name_;
+  miutil::miString              name_;
   int                   idn;
   set<miCoordinates>    cornerset;
 
@@ -92,14 +92,14 @@ private:
 
 
   void setBorders();
-  bool isPartOfSubregion(const miLine&, const miCoordinates&, miString) const;
+  bool isPartOfSubregion(const miLine&, const miCoordinates&, miutil::miString) const;
   bool cornerCompare( vector<miCoordinates> c) const;
 
 public:
   miRegions() {}
   /// create an empty region with a name, but without coordinates
-  miRegions( miString name, int id) : name_(name), idn(id) {}
-  /// create a region by joining to others 
+  miRegions( miutil::miString name, int id) : name_(name), idn(id) {}
+  /// create a region by joining to others
   miRegions( miRegions lhs, miRegions rhs, int tolerance=1) { join(lhs,rhs,tolerance); }
 
   // MODIFY--------------------------------------------------------
@@ -107,21 +107,21 @@ public:
   /// join two regions
   /** The result will affect this region directly.
    *  lhs and rhs are not unchanged except that their
-   *  area is computed   
+   *  area is computed
    *  tolerance is the tolerance in km to find connecting points...
   */
-  bool join( miRegions lhs, miRegions rhs,int tolerance=1);  
+  bool join( miRegions lhs, miRegions rhs,int tolerance=1);
 
   void clear();
   void setId(      int i                         ) { idn      = i; }
   void setPriority(int p                         ) { priority_= p; }
-  void setName(    miString n                    ) { name_    = n; }
+  void setName(    miutil::miString n                    ) { name_    = n; }
   void setOrigin(  const miCoordinates & o       ) { orig     = o; }
   void setCorners( const vector<miCoordinates> &c);
 
   /// set a new corner
   /** Warning! this function calls setBorder to recalculate all Borders etc.
-   *  when creating a new region create a vector<miCoordinates> and use    
+   *  when creating a new region create a vector<miCoordinates> and use
    *  use setCorners instead
    */
   void addCorner(  miCoordinates    );
@@ -134,12 +134,12 @@ public:
   vector<miCoordinates> getCorners() const { return corner; }
   vector<miRegions>     triangles();
 
-  miString regName()    const { return name_;              }
+  miutil::miString regName()    const { return name_;              }
   int      regId()      const { return idn;                }
   int      priority()   const { return priority_;          }
   int      size()       const { return corner.size();      }
 
-  bool     isRegion()   const { return corner.size() >  2; } 
+  bool     isRegion()   const { return corner.size() >  2; }
   bool     isTriangle() const { return corner.size() == 3; }
   int      area();
 
@@ -161,8 +161,8 @@ public:
   bool      isInside(        const miRegions&, int threshold=85  ) const; // treshold in %
   bool      isCloseOrInside( const miCoordinates&                ) const;
   int       no_of_crosses(   const miLine&                       ) const;
- 
-  miRegions subregion(float c,miString sector, bool& ok,int rnd=0) const; //sector=N|S|W|E
+
+  miRegions subregion(float c,miutil::miString sector, bool& ok,int rnd=0) const; //sector=N|S|W|E
 
   bool      isCounterClockwise();
   void      turnCounterClockwise();

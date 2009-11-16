@@ -1,6 +1,6 @@
 /*
   libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
-  
+
   $Id$
 
   Copyright (C) 2006 met.no
@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -21,7 +21,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -44,16 +44,16 @@ public:
   enum sort_mode {sort_name, sort_synop,
 		  sort_lat, sort_lon,
 		  sort_dbkey, sort_distance };
-private:  
+private:
   miCoordinates pos_;
   int synop_;
   int dbKey_;
-  miString name_;
+  miutil::miString name_;
   int hoh_;
   int priority_;
-  miString group_;
-  miString icaoid_;
-  
+  miutil::miString group_;
+  miutil::miString icaoid_;
+
   static sort_mode smode_;
   static miCoordinates origo_;
   static int sort_key(const miPosition& p1,const miPosition& p2);
@@ -61,36 +61,36 @@ private:
 public:
   miPosition():synop_(0),dbKey_(0),hoh_(0),priority_(0){}
   miPosition(const miCoordinates& pos, const int synop,
-	     const int dbkey, const miString& name,
+	     const int dbkey, const miutil::miString& name,
 	     const int hoh = 0, const int priority = 0,
-	     const miString group = "")
+	     const miutil::miString group = "")
   {setPos(pos,synop,dbkey,name,hoh,priority,group);}
 
   void setPos(const miCoordinates& pos, const int synop, const int dbkey,
-	      const miString& name, const int hoh= 0,
-	      const int priority= 0, const miString group= "");
-  
+	      const miutil::miString& name, const int hoh= 0,
+	      const int priority= 0, const miutil::miString group= "");
+
   void setDbKey(const int i)           { dbKey_  = i;     }
   void setCoor(const miCoordinates& c) { pos_    = c;     }
   void setLat(const float& l)          { pos_.setLat(l);  }
   void setLon(const float& l)          { pos_.setLon(l);  }
   void setHoH(const int h)             { hoh_    = h;     }
-  void setName(const  miString& name)  { name_   = name;  }
-  void setIcao(const  miString& icaoid){ icaoid_ = icaoid;}
-  void setGroup(const miString& group) { group_  = group; }
+  void setName(const  miutil::miString& name)  { name_   = name;  }
+  void setIcao(const  miutil::miString& icaoid){ icaoid_ = icaoid;}
+  void setGroup(const miutil::miString& group) { group_  = group; }
 
   float lon() const {return pos_.dLon();}
   float lat() const {return pos_.dLat();}
 
   const miCoordinates& Coordinates() const {return pos_;}
 
-  const miString& Name() const {return name_;}
+  const miutil::miString& Name() const {return name_;}
   int Synop()     const {return synop_;}
   int DbKey()     const {return dbKey_;}
   int height()    const {return hoh_;}
   int Priority()  const {return priority_;}
-  const miString& Group()  const {return group_;}
-  const miString& icaoID() const {return icaoid_;}
+  const miutil::miString& Group()  const {return group_;}
+  const miutil::miString& icaoID() const {return icaoid_;}
 
   int distance(const miPosition& pos) const
   { return pos_.distance(pos.Coordinates()); }
@@ -101,13 +101,13 @@ public:
   bool isInRect(const miCoordinates& nw,const miCoordinates& se ) const
   { return pos_.isInRect(nw,se); }
 
-  bool isGrp(const miString & group ) const { return group == group_ ;}
-  
+  bool isGrp(const miutil::miString & group ) const { return group == group_ ;}
+
   static void setSortMode(sort_mode smode){smode_= smode;}
   static void setSortOrigo(const miCoordinates& c){origo_=c;}
 
   friend bool operator==(const miPosition& lhs, const miPosition& rhs);
-  friend bool operator==(const miPosition& lhs, const miString& rhs);
+  friend bool operator==(const miPosition& lhs, const miutil::miString& rhs);
   friend bool operator==(const miPosition& lhs, const int& rhs);
   friend bool operator!=(const miPosition& lhs, const miPosition& rhs);
   friend bool operator<(const miPosition& lhs, const miPosition& rhs);

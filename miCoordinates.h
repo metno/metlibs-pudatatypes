@@ -1,6 +1,6 @@
 /*
   libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
-  
+
   $Id$
 
   Copyright (C) 2006 met.no
@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -21,7 +21,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -34,7 +34,7 @@
 // class to hold station coordinates
 // the usual format (taken from the klima database is
 // degrees, minutes and centiminutes ( if wanted ).
-// JS-/PU 5/99 
+// JS-/PU 5/99
 
 #include <math.h>
 #include <iostream>
@@ -55,7 +55,7 @@ struct coor {
   void addCmin(const int& );
   float fCoor() const
   { return ( (float(cmin)/6000.0) + float(deg) ); }
-  
+
   friend bool operator==(const coor& lhs, const coor& rhs);
   friend bool operator!=(const coor& lhs, const coor& rhs);
   friend bool operator<(const coor& lhs, const coor& rhs);
@@ -75,13 +75,13 @@ private:
   int    iCoor(const coor&) const;
   float  fCoor(const coor&) const;
   double sekant(double) const;
-  
+
 public:
   miCoordinates() {}
 
-  // rnd=round valid = 1-4 .... 
+  // rnd=round valid = 1-4 ....
 
-  miCoordinates( const int&   lon, const int&   lat,int rnd=0); 
+  miCoordinates( const int&   lon, const int&   lat,int rnd=0);
   miCoordinates( const float& lon, const float& lat,int rnd=0);
   miCoordinates( const coor&  lon, const coor&  lat,int rnd=0);
 
@@ -96,9 +96,9 @@ public:
                                             // around this coordinate...
   int km2deg( int, bool ) const ;
   double toRad( const coor& ) const ;
-  
+
   coor invert(const coor&) const ;
-  
+
   float dLon() const  { return fCoor(lon_); }
   float dLat() const  { return fCoor(lat_); }
   int   iLon() const  { return iCoor(lon_); }
@@ -108,11 +108,11 @@ public:
   double rLon() const { return toRad(lon_); }
   double rLat() const { return toRad(lat_); }
 
-  miString sLon();  // example: "11° 05' W"
-  miString sLat();  // example: "59° 19' N"
-  miString str();   // sLon()" : "sLat()
-  miString encode();// "lon_deg:lon_min:lat_deg:lat_min"
-  bool decode(const miString&);// decodes encode-string
+  miutil::miString sLon();  // example: "11° 05' W"
+  miutil::miString sLat();  // example: "59° 19' N"
+  miutil::miString str();   // sLon()" : "sLat()
+  miutil::miString encode();// "lon_deg:lon_min:lat_deg:lat_min"
+  bool decode(const miutil::miString&);// decodes encode-string
 
   friend miCoordinates operator+(const miCoordinates&, const miCoordinates&);
   friend miCoordinates operator-(const miCoordinates&, const miCoordinates&);
@@ -125,9 +125,9 @@ public:
   friend bool operator!=(const miCoordinates&, const miCoordinates& );
 
   friend ostream& operator<<(ostream&, const miCoordinates&);
- 
+
   bool isInRect(const miCoordinates&, const miCoordinates&) const ;
- 
+
   int distance(const miCoordinates&) const; // distance in km's
 
   double cross(const miCoordinates&) const; // cross product

@@ -4,8 +4,8 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: puDatatypes
-Description: The puDataTypes Library
+Description: The puDatatypes Library
 Version: @VERSION@
-Requires: parameter >= 3.0.0, puTools >= 3.1.0
+Requires: @puDatatypes_pc_requires@
 Libs: -L${libdir} -lpuDatatypes
 Cflags: -I${includedir}

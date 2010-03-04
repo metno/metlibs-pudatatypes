@@ -25,7 +25,7 @@ libpuDatatypes_la_LIBADD = \
 	${PARAMETER_LIBS} \
 	${PUTOOLS_LIBS}
 
-pkg_includedir = ${prefix}/include/puDatatypes
+pkg_includedir = ${includedir}/puDatatypes
 
 pkg_include_HEADERS = \
 	miCoordinates.h\

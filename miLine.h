@@ -34,9 +34,6 @@
 #include "miCoordinates.h"
 #include <math.h>
 
-
-using namespace std; 
-
 class miLine {
 private:
   float X1,Y1;             // begin

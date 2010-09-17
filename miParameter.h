@@ -39,8 +39,7 @@
 #define make_namespace
 #include <parameter/parameter.h>
 
-using namespace std;
-using namespace c_parameter;
+//using namespace c_parameter;
 
 class miParameter {
 

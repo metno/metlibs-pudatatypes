@@ -38,8 +38,6 @@
 #include <vector>
 #include <set>
 
-using namespace std;
-
 /// class containing a region withy corners name etc.
 /** The object can be compared to other regions and has functionallity to:
  *  - join and splitt regions
@@ -76,17 +74,17 @@ class miRegions {
   };
 
 private:
-  vector<miCoordinates> corner;
-  vector<miLine> border;
+  std::vector<miCoordinates> corner;
+  std::vector<miLine> border;
   miutil::miString name_;
   int idn;
-  set<miCoordinates> cornerset;
+  std::set<miCoordinates> cornerset;
 
   miCoordinates orig;
   int priority_;
   int area_; // km2
 
-  vector<miRegions> triangles_;
+  std::vector<miRegions> triangles_;
 
   miCoordinates upper_right;
   miCoordinates lower_left;
@@ -95,7 +93,7 @@ private:
   void setBorders();
   bool
       isPartOfSubregion(const miLine&, const miCoordinates&, miutil::miString) const;
-  bool cornerCompare(vector<miCoordinates> c) const;
+  bool cornerCompare(std::vector<miCoordinates> c) const;
 
 public:
   miRegions()
@@ -139,7 +137,7 @@ public:
   {
     orig = o;
   }
-  void setCorners(const vector<miCoordinates> &c);
+  void setCorners(const std::vector<miCoordinates> &c);
 
   /// set a new corner
   /** Warning! this function calls setBorder to recalculate all Borders etc.
@@ -153,11 +151,11 @@ public:
   // QUESTIONS/INFORMATION --------------------------------------------
 
 
-  vector<miCoordinates> getCorners() const
+  std::vector<miCoordinates> getCorners() const
   {
     return corner;
   }
-  vector<miRegions> triangles();
+  std::vector<miRegions> triangles();
 
   miutil::miString regName() const
   {
@@ -189,7 +187,7 @@ public:
   miRegions::miBoundaryBox getBoundary() const;
   miRegions::miBoundaryBox getFuzzyBoundary(float deg) const;
 
-  vector<miCoordinates> getBoundaryGrid(int noOfGrids, bool inside = true) const;
+  std::vector<miCoordinates> getBoundaryGrid(int noOfGrids, bool inside = true) const;
 
   miCoordinates origo() const
   {
@@ -221,7 +219,7 @@ public:
   void turnCounterClockwise();
   bool isConvex();
 
-  friend ostream& operator<<(ostream&, const miRegions&);
+  friend std::ostream& operator<<(std::ostream&, const miRegions&);
 };
 
 #endif

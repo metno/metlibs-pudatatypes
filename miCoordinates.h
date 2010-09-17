@@ -40,8 +40,6 @@
 #include <iostream>
 #include <puTools/miString.h>
 
-using namespace std;
-
 struct coor {
   int deg;
   int cmin;
@@ -91,7 +89,7 @@ public:
   // round - round off cmin
   void round(int);
 
-  vector<miCoordinates> roundedGrid(int r); // the four possible gridpoints
+  std::vector<miCoordinates> roundedGrid(int r); // the four possible gridpoints
                                             // in a rounded grid
                                             // around this coordinate...
   int km2deg( int, bool ) const ;
@@ -124,7 +122,7 @@ public:
   friend bool operator==(const miCoordinates&, const miCoordinates& );
   friend bool operator!=(const miCoordinates&, const miCoordinates& );
 
-  friend ostream& operator<<(ostream&, const miCoordinates&);
+  friend std::ostream& operator<<(std::ostream&, const miCoordinates&);
 
   bool isInRect(const miCoordinates&, const miCoordinates&) const ;
 

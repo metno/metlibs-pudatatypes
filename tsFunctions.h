@@ -40,8 +40,6 @@
 #include <functional>
 #include <algorithm>
 
-using namespace std;
-
 namespace puData {
 
 // dance the timeseries

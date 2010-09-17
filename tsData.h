@@ -40,8 +40,6 @@
 #include <puTools/miTime.h>
 #include <puTools/miString.h>
 
-using namespace std;
-
 namespace puData {
 
 template<class V> struct progVal {

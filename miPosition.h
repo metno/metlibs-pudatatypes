@@ -38,7 +38,6 @@
 #include <puTools/miString.h>
 #include "miCoordinates.h"
 
-
 class miPosition {
 public:
   enum sort_mode {sort_name, sort_synop,
@@ -115,7 +114,7 @@ public:
   friend bool operator<=(const miPosition& lhs, const miPosition& rhs);
   friend bool operator>=(const miPosition& lhs, const miPosition& rhs);
 
-  friend ostream& operator<<(ostream&, const miPosition&);
+  friend std::ostream& operator<<(std::ostream&, const miPosition&);
 
 };
 

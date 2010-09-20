@@ -79,76 +79,85 @@ template<class T> struct prefer_A {
 // return value has to be progVal<T>
 
 template<class T, typename F>
-map<miutil::miTime, progVal<T> > mask(map<miutil::miTime, progVal<T> > A, map<
-    miutil::miTime, progVal<T> > B, F& fun, const maskType & mt = AandB)
+std::map<miutil::miTime, progVal<T> > mask(
+    std::map<miutil::miTime, progVal<T> > A, std::map<miutil::miTime,
+        progVal<T> > B, F& fun, const maskType & mt = AandB)
 {
-  map<miutil::miTime, progVal<T> > iSect;
-  map<miutil::miTime, progVal<T> > AB;
+  std::map<miutil::miTime, progVal<T> > iSect;
+  std::map<miutil::miTime, progVal<T> > AB;
 
-typedef  typename map<miutil::miTime,progVal<T> >::iterator tPItr0;
+  typedef typename std::map<miutil::miTime, progVal<T> >::iterator tPItr0;
 
   tPItr0 itr = A.begin();
 
-  if(mt == AnotB ) {
-    for(; itr != A.end(); itr++)
-    if( !bool(B.count( itr->first )) )
-    AB[itr->first] = itr->second;
+  if (mt == AnotB) {
+    for (; itr != A.end(); itr++)
+      if (!bool(B.count(itr->first)))
+        AB[itr->first] = itr->second;
     return AB;
   }
 
-  for(; itr != A.end(); itr++)
-  if( bool(B.count( itr->first )))
-  iSect[itr->first] = fun(itr->second, B[ itr->first ]);
+  for (; itr != A.end(); itr++)
+    if (bool(B.count(itr->first)))
+      iSect[itr->first] = fun(itr->second, B[itr->first]);
 
-  if(mt == AandB )
-  return iSect;
+  if (mt == AandB)
+    return iSect;
 
   AB = B;
 
-  for(itr = A.begin(); itr != A.end(); itr++)
-  AB[itr->first] = ( bool(iSect.count( itr->first )) ?
-      iSect[itr->first ] : itr->second );
+  for (itr = A.begin(); itr != A.end(); itr++)
+    AB[itr->first] = (bool(iSect.count(itr->first)) ? iSect[itr->first]
+        : itr->second);
   return AB;
-};
+}
+;
 
 // with no given function ( class F - > predef is not allowed !)
 
 template<class T>
-map<miutil::miTime,progVal<T> > mask( map<miutil::miTime,progVal<T> > A,
-    map<miutil::miTime,progVal<T> > B,
-    const maskType & mt = AandB) {
+std::map<miutil::miTime, progVal<T> > mask(
+    std::map<miutil::miTime, progVal<T> > A, std::map<miutil::miTime,
+        progVal<T> > B, const maskType & mt = AandB)
+{
   prefer_A<T> fun;
-  return mask (A,B,fun,mt);
-};
+  return mask(A, B, fun, mt);
+}
+;
 
 // select a specific prog or discard one
 template<class T>
-map<miutil::miTime,progVal<T> > mask( const map<miutil::miTime,progVal<T> >& data,
-    const int& pr, const bool & incl = true ) {
+std::map<miutil::miTime, progVal<T> > mask(const std::map<miutil::miTime,
+    progVal<T> >& data, const int& pr, const bool & incl = true)
+{
 
-  map<miutil::miTime,progVal<T> > ts = data;
-  typedef typename map<miutil::miTime,progVal<T> >::iterator tPItr1;
+  std::map<miutil::miTime, progVal<T> > ts = data;
+  typedef typename std::map<miutil::miTime, progVal<T> >::iterator tPItr1;
   tPItr1 itr = ts.begin();
-  for(; itr != ts.end(); itr++)
-  if( (itr->second.prog == pr) == incl )
-  ts.erase(itr);
+  for (; itr != ts.end(); itr++)
+    if ((itr->second.prog == pr) == incl)
+      ts.erase(itr);
   return ts;
-};
+}
+;
 
 // getting the timeline
 template<class T>
-timeline times( const map<miutil::miTime,progVal<T> > & tsin ) {
+timeline times(const std::map<miutil::miTime, progVal<T> > & tsin)
+{
   timeline t;
-  map<miutil::miTime,progVal<T> > ts = tsin;
+  std::map<miutil::miTime, progVal<T> > ts = tsin;
 
-  typedef typename map<miutil::miTime,progVal<T> >::iterator tPItr2;
+  typedef typename std::map<miutil::miTime, progVal<T> >::iterator tPItr2;
   tPItr2 itr = ts.begin();
-  for(; itr != ts.end(); itr++)
-  t.insert( itr->first );
+  for (; itr != ts.end(); itr++)
+    t.insert(itr->first);
   return t;
-};
+}
+;
 
-};
+}
+;
 
 #endif
 

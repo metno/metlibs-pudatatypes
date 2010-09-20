@@ -92,13 +92,13 @@ struct datasource {
   miutil::miString tag;
 };
 
-typedef set<miutil::miTime> timeline;
+typedef std::set<miutil::miTime> timeline;
 
 template<class T> class tsData {
 private:
   //  parameter p;
   datasource src;
-  map<miutil::miTime, progVal<T> > data;
+  std::map<miutil::miTime, progVal<T> > data;
 public:
   tsData<T> ()
   {
@@ -128,7 +128,7 @@ public:
     data[t] = progVal<T> (val, pr);
   }
 
-  void setTs(map<miutil::miTime, progVal<T> > ts)
+  void setTs(std::map<miutil::miTime, progVal<T> > ts)
   {
     data = ts;
   }
@@ -141,7 +141,7 @@ public:
   {
     return data[tim].prog;
   }
-  map<miutil::miTime, progVal<T> > series() const
+  std::map<miutil::miTime, progVal<T> > series() const
   {
     return data;
   }
@@ -173,27 +173,27 @@ public:
   }
   // just for the test fun:
 
-  friend ostream& operator<<(ostream& out, const tsData<T>& tsd)
+  friend std::ostream& operator<<(std::ostream& out, const tsData<T>& tsd)
   {
-    map<miutil::miTime, progVal<T> > ts = tsd.series();
+    std::map<miutil::miTime, progVal<T> > ts = tsd.series();
 
-    typedef typename map<miutil::miTime,progVal<T> >::iterator osTProgvalItr;
+    typedef typename std::map<miutil::miTime, progVal<T> >::iterator
+        osTProgvalItr;
 
     osTProgvalItr itr = ts.begin();
-    cout<<"valid time           prog   value"<<endl;
-    cout<<"---------------------------------"<<endl;
+    std::cout << "valid time           prog   value" << std::endl;
+    std::cout << "---------------------------------" << std::endl;
     for (; itr != ts.end(); itr++)
-    out<<itr->first<<"  "
-    <<itr->second.prog
-    <<(itr->second.prog >= 100 ? "    " :"     ")
-    <<itr->second.value
-    <<endl;
+      out << itr->first << "  " << itr->second.prog
+          << (itr->second.prog >= 100 ? "    " : "     ") << itr->second.value
+          << std::endl;
     return out;
   }
 
 };
 
-};
+}
+;
 
 #endif
 

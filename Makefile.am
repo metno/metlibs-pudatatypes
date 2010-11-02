@@ -21,10 +21,6 @@ libpuDatatypes_la_LDFLAGS = \
 	${PARAMETER_LDFLAGS} \
 	${PUTOOLS_LDFLAGS}
 
-libpuDatatypes_la_LIBADD = \
-	${PARAMETER_LIBS} \
-	${PUTOOLS_LIBS}
-
 pkg_includedir = ${includedir}/puDatatypes
 
 pkg_include_HEADERS = \

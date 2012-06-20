@@ -16,10 +16,9 @@ libpuDatatypes_la_CPPFLAGS = \
 	${PARAMETER_CPPFLAGS} \
 	${PUTOOLS_CPPFLAGS}
 
-libpuDatatypes_la_LDFLAGS = \
-	${VERSION_INFO} \
-	${PARAMETER_LDFLAGS} \
-	${PUTOOLS_LDFLAGS}
+libpuDatatypes_la_LDFLAGS = ${VERSION_INFO}
+#	${PARAMETER_LDFLAGS} \
+#	${PUTOOLS_LDFLAGS}
 
 pkg_includedir = ${includedir}/puDatatypes
 

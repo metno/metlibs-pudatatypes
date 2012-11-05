@@ -17,8 +17,14 @@ libpuDatatypes_la_CPPFLAGS = \
 	${PUTOOLS_CPPFLAGS}
 
 libpuDatatypes_la_LDFLAGS = ${VERSION_INFO}
-#	${PARAMETER_LDFLAGS} \
-#	${PUTOOLS_LDFLAGS}
+if ENABLE_SHARED_LIBRARY
+libpuDatatypes_la_LDFLAGS += \
+	${PARAMETER_LDFLAGS} \
+	${PUTOOLS_LDFLAGS}
+libpuDatatypes_la_LIBADD = \
+	${PARAMETER_LIBS} \
+	${PUTOOLS_LIBS}
+endif
 
 pkg_includedir = ${includedir}/puDatatypes
 

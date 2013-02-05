@@ -16,7 +16,7 @@ libpuDatatypes_la_CPPFLAGS = \
 	${PARAMETER_CPPFLAGS} \
 	${PUTOOLS_CPPFLAGS}
 
-libpuDatatypes_la_LDFLAGS = ${VERSION_INFO}
+libpuDatatypes_la_LDFLAGS = ${puDatatypes_VERSION_INFO}
 if ENABLE_SHARED_LIBRARY
 libpuDatatypes_la_LDFLAGS += \
 	${PARAMETER_LDFLAGS} \

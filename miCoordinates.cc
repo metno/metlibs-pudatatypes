@@ -392,10 +392,10 @@ bool miCoordinates::decode(const miString& str)
 {
   vector<miString> vstr = str.split(":");
   if( vstr.size() == 4){
-    lon_.deg = atoi(vstr[0].cStr());
-    lon_.cmin= atoi(vstr[1].cStr());
-    lat_.deg = atoi(vstr[2].cStr());
-    lat_.cmin= atoi(vstr[3].cStr());
+    lon_.deg = atoi(vstr[0].c_str());
+    lon_.cmin= atoi(vstr[1].c_str());
+    lat_.deg = atoi(vstr[2].c_str());
+    lat_.cmin= atoi(vstr[3].c_str());
     return true;
   }
   return false;

@@ -63,7 +63,7 @@ class miParameter {
     parameter** plist;
     int npar;
 
-    parsepardefs(pardeffile_.cStr(), &plist, &npar);
+    parsepardefs(pardeffile_.c_str(), &plist, &npar);
     for (int i=0; i<npar; i++) {
       parlist_.insert(*(plist[i]));
       free(plist[i]);
@@ -97,7 +97,7 @@ public:
   parameter aliasToPar(const miString& alias) const
   {
     parameter p;
-    strncpy(p.alias, alias.cStr(), ALIASZ);
+    strncpy(p.alias, alias.c_str(), ALIASZ);
     set<parameter, parcmp_>::iterator hit=parlist_.find(p);
     if (hit!=parlist_.end())
       return *hit;

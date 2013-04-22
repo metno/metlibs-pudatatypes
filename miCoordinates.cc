@@ -439,12 +439,11 @@ double miCoordinates::sekant(double ang) const
   return res;
 }
 
-// --- distance to somewhere (in km)
-
-int miCoordinates::distance( const miCoordinates& in) const
+// --- distance to somewhere (in m)
+double miCoordinates::distanceTo(const miCoordinates& in) const
 {
   double angle_c;
-  double a,b,c,dist;
+  double a,b,c;
   double alpha;
   double rlo,rla;
 
@@ -474,9 +473,7 @@ int miCoordinates::distance( const miCoordinates& in) const
   if ( alpha > M_PI )
     alpha = 2 * M_PI - alpha;
 
-  dist = rEarth * alpha;
-
-  return static_cast<int>(rint(dist));
+  return (1000*rEarth) * alpha;
 }
 
 double miCoordinates::cross(const miCoordinates& c) const

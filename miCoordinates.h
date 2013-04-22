@@ -126,14 +126,13 @@ public:
 
   bool isInRect(const miCoordinates&, const miCoordinates&) const ;
 
-  int distance(const miCoordinates&) const; // distance in km's
+  int distance(const miCoordinates& c) const // distance in km's
+    { return static_cast<int>(distanceTo(c)); }
+  double distanceTo(const miCoordinates&) const; // distance in m's
 
   double cross(const miCoordinates&) const; // cross product
 
   bool isCloserThan(const miCoordinates&, int tolerance);// distance in km's
-
 };
 
-
-#endif
-
+#endif // puDatatypes_miCoordinates_h

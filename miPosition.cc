@@ -32,6 +32,7 @@
 #endif
 
 #include "miPosition.h"
+#include <puTools/miString.h>
 
 using namespace std;
 using namespace miutil;
@@ -42,10 +43,10 @@ miPosition::sort_mode miPosition::smode_= miPosition::sort_name;
 void miPosition::setPos(const miCoordinates& pos,
 			const int synop,
 			const int dbkey,
-			const miString& name,
+			const std::string& name,
 			const int hoh,
 			const int priority,
-			const miString group ){
+			const std::string group ){
   pos_      = pos;
   synop_    = synop;
   dbKey_    = dbkey;
@@ -115,7 +116,7 @@ bool operator==(const miPosition& lhs, const miPosition& rhs)
   return (miPosition::sort_key(lhs,rhs)==0);
 }
 
-bool operator==(const miPosition& lhs, const miString& rhs)
+bool operator==(const miPosition& lhs, const std::string& rhs)
 {
   return lhs.name_ == rhs ;
 }

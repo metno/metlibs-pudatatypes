@@ -1,9 +1,7 @@
 /*
  libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
 
- $Id$
-
- Copyright (C) 2006 met.no
+  Copyright (C) 2006-2013 met.no
 
  Contact information:
  Norwegian Meteorological Institute
@@ -33,10 +31,9 @@
 #include "miCoordinates.h"
 #include "miLine.h"
 
-#include <puTools/miString.h>
-
 #include <vector>
 #include <set>
+#include <string>
 
 /// class containing a region withy corners name etc.
 /** The object can be compared to other regions and has functionallity to:
@@ -76,7 +73,7 @@ class miRegions {
 private:
   std::vector<miCoordinates> corner;
   std::vector<miLine> border;
-  miutil::miString name_;
+  std::string name_;
   int idn;
   std::set<miCoordinates> cornerset;
 
@@ -92,7 +89,7 @@ private:
 
   void setBorders();
   bool
-      isPartOfSubregion(const miLine&, const miCoordinates&, miutil::miString) const;
+      isPartOfSubregion(const miLine&, const miCoordinates&, const std::string&) const;
   bool cornerCompare(std::vector<miCoordinates> c) const;
 
 public:
@@ -100,7 +97,7 @@ public:
   {
   }
   /// create an empty region with a name, but without coordinates
-  miRegions(miutil::miString name, int id) :
+  miRegions(std::string name, int id) :
     name_(name), idn(id)
   {
   }
@@ -129,7 +126,7 @@ public:
   {
     priority_ = p;
   }
-  void setName(miutil::miString n)
+  void setName(const std::string& n)
   {
     name_ = n;
   }
@@ -151,13 +148,13 @@ public:
   // QUESTIONS/INFORMATION --------------------------------------------
 
 
-  std::vector<miCoordinates> getCorners() const
+  const std::vector<miCoordinates>& getCorners() const
   {
     return corner;
   }
   std::vector<miRegions> triangles();
 
-  miutil::miString regName() const
+  const std::string& regName() const
   {
     return name_;
   }
@@ -213,7 +210,7 @@ public:
   int no_of_crosses(const miLine&) const;
 
   miRegions
-      subregion(float c, miutil::miString sector, bool& ok, int rnd = 0) const; //sector=N|S|W|E
+      subregion(float c, std::string sector, bool& ok, int rnd = 0) const; //sector=N|S|W|E
 
   bool isCounterClockwise();
   void turnCounterClockwise();

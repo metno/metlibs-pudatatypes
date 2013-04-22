@@ -1,9 +1,7 @@
 /*
   libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
   
-  $Id$
-
-  Copyright (C) 2006 met.no
+  Copyright (C) 2006-2013 met.no
 
   Contact information:
   Norwegian Meteorological Institute

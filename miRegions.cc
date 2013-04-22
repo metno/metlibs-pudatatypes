@@ -32,11 +32,12 @@
 #endif
 
 #include "miRegions.h"
-#include <math.h>
+
+#include <cmath>
+#include <iostream>
 #include <list>
 
 using namespace std;
-using namespace miutil;
 
 const bool debugmode=false;
 
@@ -302,7 +303,7 @@ vector<miRegions> miRegions::triangles()
 }
 
 
-miRegions miRegions::subregion(float c,miString sector, bool& inside,int rnd) const
+miRegions miRegions::subregion(float c,std::string sector, bool& inside,int rnd) const
 {
   miCoordinates urc = upper_right_corner();
   miCoordinates llc = lower_left_corner();
@@ -372,7 +373,7 @@ miRegions miRegions::subregion(float c,miString sector, bool& inside,int rnd) co
 
 bool miRegions::isPartOfSubregion(const miLine& clipline,
 				  const miCoordinates& p,
-				  miString sector) const
+				  const std::string& sector) const
 {
   if(sector=="N")
     return (p.dLat() >= clipline.begin().dLat());

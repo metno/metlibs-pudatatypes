@@ -28,17 +28,16 @@
 */
 
 
-#ifndef _miCoordinates_h
-#define _miCoordinates_h
+#ifndef puDatatypes_miCoordinates_h
+#define puDatatypes_miCoordinates_h
+
+#include <string>
+#include <vector>
 
 // class to hold station coordinates
 // the usual format (taken from the klima database is
 // degrees, minutes and centiminutes ( if wanted ).
 // JS-/PU 5/99
-
-#include <math.h>
-#include <iostream>
-#include <puTools/miString.h>
 
 struct coor {
   int deg;
@@ -106,11 +105,11 @@ public:
   double rLon() const { return toRad(lon_); }
   double rLat() const { return toRad(lat_); }
 
-  miutil::miString sLon();  // example: "11° 05' W"
-  miutil::miString sLat();  // example: "59° 19' N"
-  miutil::miString str();   // sLon()" : "sLat()
-  miutil::miString encode();// "lon_deg:lon_min:lat_deg:lat_min"
-  bool decode(const miutil::miString&);// decodes encode-string
+  std::string sLon();  // example: "11° 05' W"
+  std::string sLat();  // example: "59° 19' N"
+  std::string str();   // sLon()" : "sLat()
+  std::string encode();// "lon_deg:lon_min:lat_deg:lat_min"
+  bool decode(const std::string&);// decodes encode-string
 
   friend miCoordinates operator+(const miCoordinates&, const miCoordinates&);
   friend miCoordinates operator-(const miCoordinates&, const miCoordinates&);

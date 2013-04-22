@@ -1,9 +1,7 @@
 /*
   libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
 
-  $Id$
-
-  Copyright (C) 2006 met.no
+  Copyright (C) 2013 met.no
 
   Contact information:
   Norwegian Meteorological Institute
@@ -35,7 +33,6 @@
 // first used and developed for QUBA
 // JS/PU 8/99
 
-#include <puTools/miString.h>
 #include "miCoordinates.h"
 
 class miPosition {
@@ -47,11 +44,11 @@ private:
   miCoordinates pos_;
   int synop_;
   int dbKey_;
-  miutil::miString name_;
+  std::string name_;
   int hoh_;
   int priority_;
-  miutil::miString group_;
-  miutil::miString icaoid_;
+  std::string group_;
+  std::string icaoid_;
 
   static sort_mode smode_;
   static miCoordinates origo_;
@@ -60,36 +57,36 @@ private:
 public:
   miPosition():synop_(0),dbKey_(0),hoh_(0),priority_(0){}
   miPosition(const miCoordinates& pos, const int synop,
-	     const int dbkey, const miutil::miString& name,
+	     const int dbkey, const std::string& name,
 	     const int hoh = 0, const int priority = 0,
-	     const miutil::miString group = "")
+	     const std::string group = "")
   {setPos(pos,synop,dbkey,name,hoh,priority,group);}
 
   void setPos(const miCoordinates& pos, const int synop, const int dbkey,
-	      const miutil::miString& name, const int hoh= 0,
-	      const int priority= 0, const miutil::miString group= "");
+	      const std::string& name, const int hoh= 0,
+	      const int priority= 0, const std::string group= "");
 
   void setDbKey(const int i)           { dbKey_  = i;     }
   void setCoor(const miCoordinates& c) { pos_    = c;     }
   void setLat(const float& l)          { pos_.setLat(l);  }
   void setLon(const float& l)          { pos_.setLon(l);  }
   void setHoH(const int h)             { hoh_    = h;     }
-  void setName(const  miutil::miString& name)  { name_   = name;  }
-  void setIcao(const  miutil::miString& icaoid){ icaoid_ = icaoid;}
-  void setGroup(const miutil::miString& group) { group_  = group; }
+  void setName(const  std::string& name)  { name_   = name;  }
+  void setIcao(const  std::string& icaoid){ icaoid_ = icaoid;}
+  void setGroup(const std::string& group) { group_  = group; }
 
   float lon() const {return pos_.dLon();}
   float lat() const {return pos_.dLat();}
 
   const miCoordinates& Coordinates() const {return pos_;}
 
-  const miutil::miString& Name() const {return name_;}
+  const std::string& Name() const {return name_;}
   int Synop()     const {return synop_;}
   int DbKey()     const {return dbKey_;}
   int height()    const {return hoh_;}
   int Priority()  const {return priority_;}
-  const miutil::miString& Group()  const {return group_;}
-  const miutil::miString& icaoID() const {return icaoid_;}
+  const std::string& Group()  const {return group_;}
+  const std::string& icaoID() const {return icaoid_;}
 
   int distance(const miPosition& pos) const
   { return pos_.distance(pos.Coordinates()); }
@@ -100,13 +97,13 @@ public:
   bool isInRect(const miCoordinates& nw,const miCoordinates& se ) const
   { return pos_.isInRect(nw,se); }
 
-  bool isGrp(const miutil::miString & group ) const { return group == group_ ;}
+  bool isGrp(const std::string & group ) const { return group == group_ ;}
 
   static void setSortMode(sort_mode smode){smode_= smode;}
   static void setSortOrigo(const miCoordinates& c){origo_=c;}
 
   friend bool operator==(const miPosition& lhs, const miPosition& rhs);
-  friend bool operator==(const miPosition& lhs, const miutil::miString& rhs);
+  friend bool operator==(const miPosition& lhs, const std::string& rhs);
   friend bool operator==(const miPosition& lhs, const int& rhs);
   friend bool operator!=(const miPosition& lhs, const miPosition& rhs);
   friend bool operator<(const miPosition& lhs, const miPosition& rhs);

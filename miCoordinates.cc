@@ -32,16 +32,14 @@
 #endif
 
 #include "miCoordinates.h"
+
+#include "puTools/miString.h"
+
 #include <sstream>
+#include <cmath>
+#include <iostream>
 
-
-using namespace std;
-using namespace miutil;
-
-// --- constructor stuff ---
-
-
-const double rEarth = 6370;
+static const double rEarth = 6370; // in km
 
 /*
   ===================================================
@@ -203,9 +201,9 @@ void miCoordinates::round(int r)
   if(lon_.round(r)) lat_.round(r);
 }
 
-vector<miCoordinates> miCoordinates::roundedGrid(int r)
+std::vector<miCoordinates> miCoordinates::roundedGrid(int r)
 {
-  vector<miCoordinates> p;
+  std::vector<miCoordinates> p;
 
   coor latr=lat_;
   coor lonr=lon_;
@@ -373,25 +371,25 @@ void miCoordinates::addLat(coor rhs)
 // --- ostream ---
 
 
-miString miCoordinates::str()
+std::string miCoordinates::str()
 {
-  ostringstream out;
+  std::ostringstream out;
   out << sLon() << " : " << sLat();
   return out.str();
 }
 
-miString miCoordinates::encode()
+std::string miCoordinates::encode()
 {
-  ostringstream out;
+  std::ostringstream out;
   out << lon_.deg << ":" << lon_.cmin << ":"
       << lat_.deg << ":" << lat_.cmin;
   return out.str();
 }
 
-bool miCoordinates::decode(const miString& str)
+bool miCoordinates::decode(const std::string& str)
 {
-  vector<miString> vstr = str.split(":");
-  if( vstr.size() == 4){
+  std::vector<std::string> vstr = miutil::split(str, 0, ":");
+  if (vstr.size() == 4) {
     lon_.deg = atoi(vstr[0].c_str());
     lon_.cmin= atoi(vstr[1].c_str());
     lat_.deg = atoi(vstr[2].c_str());
@@ -401,9 +399,9 @@ bool miCoordinates::decode(const miString& str)
   return false;
 }
 
-miString miCoordinates::sLon()
+std::string miCoordinates::sLon()
 {
- ostringstream out;
+ std::ostringstream out;
  char lonp = ((iLon() < 0) ? 'W': 'E');
  out << abs(lon_.deg) << "° "
      << fabs(float(lon_.cmin)/100)
@@ -412,9 +410,9 @@ miString miCoordinates::sLon()
 }
 
 
-miString miCoordinates::sLat()
+std::string miCoordinates::sLat()
 {
- ostringstream out;
+ std::ostringstream out;
  char latp = ((iLat() < 0) ? 'S': 'N');
  out << abs(lat_.deg) << "° "
      << fabs(float(lat_.cmin)/100)
@@ -422,7 +420,7 @@ miString miCoordinates::sLat()
  return out.str();
 }
 
-ostream& operator<<(ostream& out, const miCoordinates& rhs)
+std::ostream& operator<<(std::ostream& out, const miCoordinates& rhs)
 {
   miCoordinates tmp = rhs;
   out << tmp.str();

@@ -39,7 +39,40 @@
 #include <cmath>
 #include <iostream>
 
-static const double rEarth = 6370; // in km
+extern const double EARTH_RADIUS_M = 6371000;
+static const double RAD_TO_DEG = (180/M_PIl);
+static const double DEG_TO_RAD = 1/RAD_TO_DEG;
+
+LonLat LonLat::fromDegrees(double lonDeg, double latDeg)
+{
+  return LonLat(lonDeg * DEG_TO_RAD, latDeg * DEG_TO_RAD);
+}
+
+// distance in m's from lonlat in degrees
+double LonLat::distanceTo(const LonLat& to) const
+{
+  const double lon1 = lon();
+  const double lat1 = lat();
+  const double lon2 = to.lon();
+  const double lat2 = to.lat();
+  const double sinlat = std::sin((lat2 - lat1) / 2);
+  const double sinlon = std::sin((lon2 - lon1) / 2);
+  const double a = sinlat * sinlat + std::cos(lat1) * std::cos(lat2) * sinlon * sinlon;
+  const double c = 2 * std::atan2(sqrt(a), sqrt(1 - a));
+  return EARTH_RADIUS_M * c;
+}
+
+double LonLat::bearingTo(const LonLat& to) const
+{
+  // source: http://www.movable-type.co.uk/scripts/latlong.html
+
+  const double dLon = (to.lon() - lon());
+
+  const double clat2 = std::cos(to.lat());
+  const double y = std::sin(dLon) * clat2;
+  const double x = std::cos(lat())*std::sin(to.lat()) - std::sin(lat())*clat2*std::cos(dLon);
+  return fmod(std::atan2(y, x) + 2*M_PI, 2*M_PI);
+}
 
 /*
   ===================================================
@@ -438,40 +471,21 @@ double miCoordinates::sekant(double ang) const
 }
 
 // --- distance to somewhere (in m)
-double miCoordinates::distanceTo(const miCoordinates& in) const
+double miCoordinates::distanceTo(const miCoordinates& to) const
 {
-  double angle_c;
-  double a,b,c;
-  double alpha;
-  double rlo,rla;
+  return LonLat(rLon(), rLat()).distanceTo(LonLat(to.rLon(), to.rLat()));
+}
 
-  angle_c = cos(in.rLat()) * cos(rLat());
+/*! initial bearing to a lon/lat point in radians */
+double miCoordinates::bearingToR(const miCoordinates& to) const
+{
+  return LonLat(rLon(), rLat()).bearingTo(LonLat(to.rLon(), to.rLat()));
+}
 
-  miCoordinates diff = *this - in ;
-
-  rlo = fabs(diff.rLon() );
-  rla = fabs(diff.rLat() );
-
-  if ( rlo< 0.000000001 )
-    alpha = rla;
-
-  else if ( rla < 0.000000001)
-    alpha = sqrt( angle_c ) * rlo;
-
-  else {
-
-    a = sekant(rlo );
-    b = sekant(rla );
-
-    c = sqrt( a*a*angle_c + b*b );
-
-    alpha = 2 * asin( c / 2 );
-  }
-
-  if ( alpha > M_PI )
-    alpha = 2 * M_PI - alpha;
-
-  return (1000*rEarth) * alpha;
+double miCoordinates::bearingToD(const miCoordinates& to) const
+{
+  const double b = bearingToR(to);
+  return ::fmod((b+360), 360);
 }
 
 double miCoordinates::cross(const miCoordinates& c) const
@@ -486,5 +500,4 @@ bool miCoordinates::isCloserThan(const miCoordinates& lhs, int tolerance)
     return ( lhs == *this );
 
   return ( distance(lhs) <= tolerance );
-
 }

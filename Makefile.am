@@ -1,4 +1,5 @@
-# $Id$
+
+SUBDIRS = test
 
 pkgname = puDatatypes
 

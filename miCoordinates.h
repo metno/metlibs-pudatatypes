@@ -34,6 +34,37 @@
 #include <string>
 #include <vector>
 
+/*! mean earth radius in m */
+extern const double EARTH_RADIUS_M;
+
+class LonLat {
+public:
+  LonLat()
+    : mLon(1000), mLat(1000) { }
+  LonLat(double lon, double lat)
+    : mLon(lon), mLat(lat) { }
+
+  static LonLat fromDegrees(double lonDeg, double latDeg);
+
+  //! longitude in radians
+  double lon() const
+    { return mLon; }
+
+  //! latitude in radians
+  double lat() const
+    { return mLat; }
+
+  //! distance along great circle in m
+  double distanceTo(const LonLat& to) const;
+
+  //! initial bearing along great circle in radians
+  double bearingTo(const LonLat& to) const;
+
+private:
+  double mLon;
+  double mLat;
+};
+
 // class to hold station coordinates
 // the usual format (taken from the klima database is
 // degrees, minutes and centiminutes ( if wanted ).
@@ -128,6 +159,9 @@ public:
   int distance(const miCoordinates& c) const // distance in km's
     { return static_cast<int>(distanceTo(c)); }
   double distanceTo(const miCoordinates&) const; // distance in m's
+
+  double bearingToR(const miCoordinates& to) const; // initial bearing in radians
+  double bearingToD(const miCoordinates& to) const; // initial bearing in degrees
 
   double cross(const miCoordinates&) const; // cross product
 

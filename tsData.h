@@ -36,6 +36,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <iostream>
 
 #include <puTools/miTime.h>
 #include <puTools/miString.h>

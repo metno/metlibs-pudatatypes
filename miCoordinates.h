@@ -157,7 +157,7 @@ public:
   bool isInRect(const miCoordinates&, const miCoordinates&) const ;
 
   int distance(const miCoordinates& c) const // distance in km's
-    { return static_cast<int>(distanceTo(c)); }
+    { return static_cast<int>(distanceTo(c)/1000); }
   double distanceTo(const miCoordinates&) const; // distance in m's
 
   double bearingToR(const miCoordinates& to) const; // initial bearing in radians

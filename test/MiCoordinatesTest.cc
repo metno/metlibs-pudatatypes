@@ -55,3 +55,12 @@ TEST(LonLatTest, BearingTo)
   EXPECT_NEAR(180, r2d(LonLat::fromDegrees( 10, -89).bearingTo(LonLat::fromDegrees(190, -89))), 1e-5);
   EXPECT_NEAR(185, r2d(LonLat::fromDegrees(180, -89).bearingTo(LonLat::fromDegrees( 10, -89))), 0.25);
 }
+
+TEST(MiCoordinatesTest, Distance)
+{
+  const miCoordinates bl(BLINDERN_LON, BLINDERN_LAT);
+  const miCoordinates fa(FANNARAK_LON, FANNARAK_LAT);
+
+  EXPECT_NEAR(232400, bl.distanceTo(fa), 100); // m
+  EXPECT_NEAR(232,    bl.distance  (fa), 1); // km!
+}

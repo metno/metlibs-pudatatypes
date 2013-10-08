@@ -54,6 +54,12 @@ public:
   double lat() const
     { return mLat; }
 
+  //! longitude in degrees
+  double lonDeg() const;
+
+  //! latitude in degrees
+  double latDeg() const;
+
   //! distance along great circle in m
   double distanceTo(const LonLat& to) const;
 

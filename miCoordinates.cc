@@ -43,6 +43,16 @@ extern const double EARTH_RADIUS_M = 6371000;
 static const double RAD_TO_DEG = (180/M_PIl);
 static const double DEG_TO_RAD = 1/RAD_TO_DEG;
 
+double LonLat::lonDeg() const
+{
+  return mLon * RAD_TO_DEG;
+}
+
+double LonLat::latDeg() const
+{
+  return mLat * RAD_TO_DEG;
+}
+
 LonLat LonLat::fromDegrees(double lonDeg, double latDeg)
 {
   return LonLat(lonDeg * DEG_TO_RAD, latDeg * DEG_TO_RAD);

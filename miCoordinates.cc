@@ -84,6 +84,17 @@ double LonLat::bearingTo(const LonLat& to) const
   return fmod(std::atan2(y, x) + 2*M_PI, 2*M_PI);
 }
 
+LonLat LonLat::stepDirection(double distance, double bearing) const
+{
+  // source: http://www.movable-type.co.uk/scripts/latlong.html
+
+  const double dr = distance/EARTH_RADIUS_M, sin_dr = std::sin(dr), cos_dr = std::cos(dr),
+      sin_lat = std::sin(lat()), cos_lat = std::cos(lat());
+  const double sin_lat2 = sin_lat*cos_dr + cos_lat*sin_dr*std::cos(bearing), lat2 = std::asin(sin_lat2);
+  const double lon2 = lon() + std::atan2(std::sin(bearing)*sin_dr*cos_lat, cos_dr-sin_lat*sin_lat2);
+  return LonLat(lon2, lat2);
+}
+
 /*
   ===================================================
                  coor
@@ -135,8 +146,8 @@ bool coor::round(int r, bool best)
     cmin=0;
   } else {
 
-    int   pre =       r/2;
-    float fpre=(float(r)/2)-pre+1;
+    // unused int   pre =       r/2;
+    // unused float fpre=(float(r)/2)-pre+1;
 
     int front=cmin/r;
     int tail=cmin%r;

@@ -14,6 +14,16 @@ static double r2d(double radian)
   return radian * 180 / M_PI;
 }
 
+static double d2r(double degrees)
+{
+  return degrees * M_PI / 180;
+}
+
+double dms2r(int deg, int min, int sec)
+{
+  return d2r(deg + (min/60.0) + (sec/3600.0));
+}
+
 TEST(LonLatTest, Basic)
 {
   EXPECT_FLOAT_EQ(BLINDERN_LON, r2d(blindern.lon()));
@@ -63,4 +73,18 @@ TEST(MiCoordinatesTest, Distance)
 
   EXPECT_NEAR(232400, bl.distanceTo(fa), 100); // m
   EXPECT_NEAR(232,    bl.distance  (fa), 1); // km!
+}
+
+TEST(MiCoordinatesTest, StepDirection)
+{
+  const LonLat step100 = blindern.stepDirection(100000, d2r(320));
+  EXPECT_NEAR(dms2r( 9,32,29), step100.lon(), 1e-4);
+  EXPECT_NEAR(dms2r(60,37,34), step100.lat(), 1e-4);
+}
+
+TEST(MiCoordinatesTest, StepTo)
+{
+  const LonLat step50 = blindern.stepTo(50000, fannarak);
+  EXPECT_NEAR(dms2r(10, 8,13), step50.lon(), 1e-4);
+  EXPECT_NEAR(dms2r(60,17, 8), step50.lat(), 1e-4);
 }

@@ -66,6 +66,13 @@ public:
   //! initial bearing along great circle in radians
   double bearingTo(const LonLat& to) const;
 
+  //! calculate final point going 'distance' meters from here in direction 'bearing' (in radians)
+  LonLat stepDirection(double distance, double bearing) const;
+
+  //! calculate final point going 'distance' meters from here towards in direction 'bearing' (in radians)
+  LonLat stepTo(double distance, const LonLat& there) const
+    { return stepDirection(distance, bearingTo(there)); }
+
 private:
   double mLon;
   double mLat;

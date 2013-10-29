@@ -1,9 +1,7 @@
 /*
  libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
-
- $Id$
-
- Copyright (C) 2006 met.no
+ 
+ Copyright (C) 2006-2013 met.no
 
  Contact information:
  Norwegian Meteorological Institute
@@ -33,13 +31,12 @@
 // template class to hold a timeserie of one parameter.
 // JS/PU 9/99
 
-#include <map>
-#include <set>
-#include <vector>
-#include <iostream>
-
 #include <puTools/miTime.h>
 #include <puTools/miString.h>
+
+#include <iosfwd>
+#include <map>
+#include <set>
 
 namespace puData {
 
@@ -182,8 +179,8 @@ public:
         osTProgvalItr;
 
     osTProgvalItr itr = ts.begin();
-    std::cout << "valid time           prog   value" << std::endl;
-    std::cout << "---------------------------------" << std::endl;
+    out << "valid time           prog   value" << std::endl;
+    out << "---------------------------------" << std::endl;
     for (; itr != ts.end(); itr++)
       out << itr->first << "  " << itr->second.prog
           << (itr->second.prog >= 100 ? "    " : "     ") << itr->second.value
@@ -193,8 +190,6 @@ public:
 
 };
 
-}
-;
+} // namespace puData
 
 #endif
-

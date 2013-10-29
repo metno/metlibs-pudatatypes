@@ -1,9 +1,7 @@
 /*
   libpuDatatypes - Diverse datatypes: Regions, coordinates and alike
   
-  $Id$
-
-  Copyright (C) 2006 met.no
+  Copyright (C) 2006-2013 met.no
 
   Contact information:
   Norwegian Meteorological Institute
@@ -32,9 +30,7 @@
 #define _miParameter_h
 
 #include <set>
-#include <iostream>
-
-#include <puTools/miString.h>
+#include <string>
 
 #define make_namespace
 #include <parameter/parameter.h>
@@ -46,14 +42,14 @@ class miParameter {
   struct parcmp_ {
     bool operator()(const parameter& p1, const parameter& p2) const
     {
-      miString s1(p1.alias), s2(p2.alias);
+      std::string s1(p1.alias), s2(p2.alias);
       return (s1<s2);
     }
   };
 
-  static set<parameter, parcmp_> parlist_;
+  static std::set<parameter, parcmp_> parlist_;
   static bool initialised_;
-  static miString pardeffile_;
+  static std::string pardeffile_;
 
   void fillParlist_()
   {
@@ -77,14 +73,14 @@ public:
   {
     initialised_=false;
   }
-  miParameter(const miString& filename)
+  miParameter(const std::string& filename)
   {
     pardeffile_=filename;
     initialised_=false;
     fillParlist_();
   }
 
-  void refill(const miString& filename)
+  void refill(const std::string& filename)
   {
     pardeffile_=filename;
     initialised_=false;
@@ -94,11 +90,11 @@ public:
 
   int size() const { return parlist_.size(); }
 
-  parameter aliasToPar(const miString& alias) const
+  parameter aliasToPar(const std::string& alias) const
   {
     parameter p;
     strncpy(p.alias, alias.c_str(), ALIASZ);
-    set<parameter, parcmp_>::iterator hit=parlist_.find(p);
+    std::set<parameter, parcmp_>::iterator hit=parlist_.find(p);
     if (hit!=parlist_.end())
       return *hit;
     parameter q;
@@ -115,9 +111,9 @@ public:
 
 };
   
-set<parameter, miParameter::parcmp_> miParameter::parlist_=
-set<parameter, miParameter::parcmp_>();
-miString miParameter::pardeffile_="";
+std::set<parameter, miParameter::parcmp_> miParameter::parlist_=
+std::set<parameter, miParameter::parcmp_>();
+std::string miParameter::pardeffile_="";
 bool miParameter::initialised_=false;
 
 #endif

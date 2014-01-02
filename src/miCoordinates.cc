@@ -33,11 +33,15 @@
 
 #include "miCoordinates.h"
 
-#include "puTools/miString.h"
-
 #include <sstream>
 #include <cmath>
 #include <iostream>
+
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
+
+#include <exception>
+
 
 extern const double EARTH_RADIUS_M = 6371000.0;
 static const double RAD_TO_DEG = (180.0/M_PI);
@@ -440,17 +444,24 @@ std::string miCoordinates::encode()
   return out.str();
 }
 
-bool miCoordinates::decode(const std::string& str)
+bool miCoordinates::decode(const std::string& token)
 {
-  std::vector<std::string> vstr = miutil::split(str, 0, ":");
-  if (vstr.size() == 4) {
-    lon_.deg = atoi(vstr[0].c_str());
-    lon_.cmin= atoi(vstr[1].c_str());
-    lat_.deg = atoi(vstr[2].c_str());
-    lat_.cmin= atoi(vstr[3].c_str());
-    return true;
+  std::vector<std::string> words;
+  boost::split(words, token, boost::algorithm::is_any_of(":"));
+ 
+  if (words.size() != 4) 
+    return false;
+
+  try {
+    lon_.deg = boost::lexical_cast<int>(words[0]);
+    lon_.cmin= boost::lexical_cast<int>(words[1]);
+    lat_.deg = boost::lexical_cast<int>(words[2]);
+    lat_.cmin= boost::lexical_cast<int>(words[3]);   
+  } catch ( std::exception& e) {
+    return false;
   }
-  return false;
+  return true;
+
 }
 
 std::string miCoordinates::sLon()

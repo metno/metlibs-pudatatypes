@@ -32,10 +32,9 @@
 #endif
 
 #include "miPosition.h"
-#include <puTools/miString.h>
+#include <sstream>
 
 using namespace std;
-using namespace miutil;
 
 miCoordinates miPosition::origo_=miCoordinates(float(0.0),float(89.9));
 miPosition::sort_mode miPosition::smode_= miPosition::sort_name;

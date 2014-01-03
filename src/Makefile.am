@@ -19,3 +19,4 @@ libpuDatatypes_la_CPPFLAGS = ${BOOST_CPPFLAGS}
 libpuDatatypes_la_LDFLAGS = ${VERSION_INFO}
 
 
+INSTALL=install -p 

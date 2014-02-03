@@ -1,0 +1,5 @@
+metlibs-common-pudatatypes (5.0.0-1) unstable; urgency=low
+
+  * Split from all-in-one metlibs
+
+ -- Lisbeth Bergholt <lisbeth.bergholt@met.no>  Mon, 03 Feb 2014 11:44:12 +0100

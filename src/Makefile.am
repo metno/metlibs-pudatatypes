@@ -13,10 +13,6 @@ pkg_includedir = ${includedir}/puDatatypes
 
 pkg_include_HEADERS = $(libpuDatatypes_la_SOURCES:.cc=.h)
 
-
 libpuDatatypes_la_CPPFLAGS = ${BOOST_CPPFLAGS}
 
 libpuDatatypes_la_LDFLAGS = ${VERSION_INFO}
-
-
-INSTALL=install -p 

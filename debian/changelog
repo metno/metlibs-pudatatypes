@@ -1,3 +1,9 @@
+metlibs-common-pudatatypes (5.0.0-2) unstable; urgency=low
+
+  * google tests
+
+ -- Lisbeth Bergholt <lisbeth.bergholt@met.no>  Tue, 04 Feb 2014 15:48:02 +0100
+
 metlibs-common-pudatatypes (5.0.0-1) unstable; urgency=low
 
   * Split from all-in-one metlibs

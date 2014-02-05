@@ -13,6 +13,8 @@ pkg_includedir = ${includedir}/puDatatypes
 
 pkg_include_HEADERS = $(libpuDatatypes_la_SOURCES:.cc=.h)
 
-libpuDatatypes_la_CPPFLAGS = ${BOOST_CPPFLAGS}
+libpuDatatypes_la_CPPFLAGS = -fPIC ${BOOST_CPPFLAGS}
 
-libpuDatatypes_la_LDFLAGS = ${VERSION_INFO}
+libpuDatatypes_la_LDFLAGS = -fPIC ${VERSION_INFO}
+
+INSTALL=install -p # tells install to preserve timestamp

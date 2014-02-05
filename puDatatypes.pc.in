@@ -6,5 +6,5 @@ includedir=@includedir@
 Name: puDatatypes
 Description: The puDatatypes Library
 Version: @VERSION@
-Libs: -L${libdir} -lpuDatatypes
-Cflags: -I${includedir}
+Libs: -fPIC -L${libdir} -lpuDatatypes
+Cflags: -I${includedir} -fPIC

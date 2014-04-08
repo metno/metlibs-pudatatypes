@@ -11,7 +11,7 @@ puDatatypesTest_SOURCES = \
 puDatatypesTest_LDFLAGS = \
     $(AM_LDFLAGS) $(gtest_LDFLAGS)
 puDatatypesTest_CPPFLAGS = \
-    $(AM_CPPFLAGS) $(gtest_CPPFLAGS)
+    $(AM_CPPFLAGS) $(gtest_CPPFLAGS) -I$(top_srcdir)/src
 
 puDatatypesTest_req_libs = $(top_builddir)/src/libpuDatatypes.la
 

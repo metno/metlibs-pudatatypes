@@ -448,15 +448,15 @@ bool miCoordinates::decode(const std::string& token)
 {
   std::vector<std::string> words;
   boost::split(words, token, boost::algorithm::is_any_of(":"));
- 
-  if (words.size() != 4) 
+
+  if (words.size() != 4)
     return false;
 
   try {
     lon_.deg = boost::lexical_cast<int>(words[0]);
     lon_.cmin= boost::lexical_cast<int>(words[1]);
     lat_.deg = boost::lexical_cast<int>(words[2]);
-    lat_.cmin= boost::lexical_cast<int>(words[3]);   
+    lat_.cmin= boost::lexical_cast<int>(words[3]);
   } catch ( std::exception& e) {
     return false;
   }
@@ -468,7 +468,7 @@ std::string miCoordinates::sLon()
 {
  std::ostringstream out;
  char lonp = ((iLon() < 0) ? 'W': 'E');
- out << abs(lon_.deg) << "° "
+ out << abs(lon_.deg) << "\260 " // latin1 degree-sign
      << fabs(float(lon_.cmin)/100)
      << "\'" << lonp;
  return out.str();
@@ -479,7 +479,7 @@ std::string miCoordinates::sLat()
 {
  std::ostringstream out;
  char latp = ((iLat() < 0) ? 'S': 'N');
- out << abs(lat_.deg) << "° "
+ out << abs(lat_.deg) << "\260 " // latin1 degree-sign
      << fabs(float(lat_.cmin)/100)
      << "\'" << latp;
  return out.str();

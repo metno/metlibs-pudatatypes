@@ -62,7 +62,7 @@ LonLat LonLat::fromDegrees(double lonDeg, double latDeg)
   return LonLat(lonDeg * DEG_TO_RAD, latDeg * DEG_TO_RAD);
 }
 
-// distance in m's from lonlat in degrees
+// distance in m's from lonlat in radians
 double LonLat::distanceTo(const LonLat& to) const
 {
   const double lon1 = lon();

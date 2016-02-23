@@ -1,3 +1,11 @@
+metlibs-common-pudatatypes (5.0.2-1) trusty; urgency=low
+
+  * disabled unstable test (roundoff problems)
+  * improve boost dependency handling
+  * fixed Build-Depends
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Tue, 23 Feb 2016 08:40:00 +0100
+
 metlibs-common-pudatatypes (5.0.1-1) unstable; urgency=low
 
   * workaround for bdiana using static libs to build shared lib

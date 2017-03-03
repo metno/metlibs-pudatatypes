@@ -1,15 +1,40 @@
 Source: metlibs-common-pudatatypes
 Priority: optional
-Maintainer: Metapps Team <diana@met.no>
-Build-Depends:  debhelper (>= 9),
- autoconf (>=2.61), automake (>= 1.10), libtool (>= 1.5),
- libgtest-dev, pkg-config, libboost-dev
+Maintainer: MET Norway <diana@met.no>
+Build-Depends: debhelper (>= 9),
+ cmake,
+ libboost-dev,
+ pkg-config,
+ libgtest-dev
 Standards-Version: 3.9.2
 Section: libs
 
 Package: metlibs-pudatatypes-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}
-Description: pudatatypes.
- metlibs pudatatypes.
+Depends: libmetlibs-pudatatypes6 (= ${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: MET Norway pu datatypes library
+ MET Norway pu datatypes library with, e.g., lon-lat functions.
+ .
+ This package contains the development files.
+
+Package: libmetlibs-pudatatypes6
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: MET Norway pu datatypes library
+ MET Norway pu datatypes library with, e.g., lon-lat functions.
+ .
+ This package contains the shared library.
+
+Package: libmetlibs-pudatatypes6-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: libmetlibs-pudatatypes6 (= ${binary:Version})
+Description: MET Norway pu datatypes library
+ MET Norway pu datatypes library with, e.g., lon-lat functions.
+ .
+ This package contains the shared library debug symbols.

@@ -1,4 +1,10 @@
-/debian/metlibs-pudatatypes-dev.debhelper.log
-/debian/metlibs-pudatatypes-dev.substvars
-/debian/metlibs-pudatatypes-dev
+debian/.debhelper/
+/debian/*.debhelper.log
+/debian/*.substvars
+/debian/metlibs-pudatatypes-dev/
+/debian/libmetlibs-pudatatypes6/
+/debian/libmetlibs-pudatatypes6-dbg/
 /debian/files
+/debian/debhelper-build-stamp
+/debian/tmp/
+/obj-x86_64-linux-gnu/

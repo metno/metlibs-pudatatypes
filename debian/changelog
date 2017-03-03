@@ -1,3 +1,10 @@
+metlibs-common-pudatatypes (6.0.0-1) unstable; urgency=low
+
+  * CMake build
+  * shared library
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Fri, 03 Mar 2017 08:00:08 +0100
+
 metlibs-common-pudatatypes (5.0.2-1) trusty; urgency=low
 
   * disabled unstable test (roundoff problems)

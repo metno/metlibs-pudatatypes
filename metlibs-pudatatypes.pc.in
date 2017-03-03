@@ -1,0 +1,9 @@
+prefix=@pc_prefix@
+libdir=@pc_libdir@
+includedir=@pc_includedir@
+
+Name: metlibs-pudatatypes
+Description: MET Norway pu datatypes library
+Version: @PUDATATYPES_PVERSION_FULL@
+Cflags: -I${includedir}/metlibs
+Libs: -L${libdir} -l@lib_name@

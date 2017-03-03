@@ -138,7 +138,7 @@ void miRegions::setCorners(const vector<miCoordinates> &c )
   cornerset.clear();
   corner.clear();
 
-  for(int i=0;i<c.size();i++) {
+  for(size_t i=0;i<c.size();i++) {
     if(cornerset.count(c[i]))
       continue;
     cornerset.insert(c[i]);
@@ -164,8 +164,8 @@ void miRegions::setBorders()
   if(corn[0] != corn[corn.size() -1 ] )
     corn.push_back(corner[0]);
 
-  for( int i = 0; i < (corn.size()-1); i++) {
-    tmp.set(corn[i],corn[i+1]);
+  for (size_t i = 1; i < corn.size(); i++) {
+    tmp.set(corn[i-1],corn[i]);
     border.push_back(tmp);
   }
   area_=0;
@@ -180,7 +180,7 @@ void miRegions::setBorders()
   float cy  = 0;
   float sum = 0;
 
-  for ( int i = 0; i < corner.size(); i++){
+  for (size_t i = 0; i < corner.size(); i++) {
     llx = ( corner[i].iLon() < llx ? corner[i].iLon() : llx );
     lly = ( corner[i].iLat() < lly ? corner[i].iLat() : lly );
 
@@ -208,7 +208,7 @@ ostream& operator<<(ostream& out, const miRegions& rhs)
   vector<miCoordinates> crn = rhs.corner;
 
   out<<"REGION:\t" << rhs.name_ << "\n";
-  for(int i = 0; i < crn.size(); i++ )
+  for (size_t i = 0; i < crn.size(); i++)
     out << crn[i] << endl;
 
  return out;
@@ -228,7 +228,7 @@ bool miRegions::isInside( const miCoordinates & seek_pt ) const
 int miRegions::no_of_crosses(const miLine& target) const
 {
   int count = 0;
-  for (int i = 0; i < border.size(); i++ )
+  for (size_t i = 0; i < border.size(); i++ )
     if ( border[i].cross( target ) )
       count++;
   return count;
@@ -286,7 +286,7 @@ vector<miRegions> miRegions::triangles()
 
       bool inside=false;
 
-      for(int j=0;j<tcorners.size();j++)
+      for (int j=0;j<int(tcorners.size());j++)
 	if(j!=prev && j!=curr && j!= next)
 	  if(tmp.isInside(tcorners[j])) {
 	    inside=true;
@@ -340,14 +340,14 @@ miRegions miRegions::subregion(float c,std::string sector, bool& inside,int rnd)
 
   vector<miCoordinates>   sub;
 
-  for (int i = 0; i < border.size(); i++ ) {
+  for (size_t i = 0; i < border.size(); i++) {
     if( isPartOfSubregion(clipline, border[i].begin(),sector))
       sub.push_back(border[i].begin());
 
     if(border[i].crossingPoint(clipline,tmp)) {
       if(rnd) {
 	vector<miCoordinates> rgrid=tmp.roundedGrid(rnd);
-	for(int i=0; i<rgrid.size();i++) {
+	for(size_t i=0; i<rgrid.size(); i++) {
 	  if(isInside(rgrid[i])) {
 	    tmp=rgrid[i];
 	    break;
@@ -399,9 +399,9 @@ bool miRegions::isConvex()
 
    double c1 = a.cross(b);
 
-   for ( int i = 2; i < corner.size()-1; i++ ) {
+   for (size_t i = 3; i < corner.size(); i++) {
      a=b;
-     b = corner[i+1] - corner[i];
+     b = corner[i] - corner[i-1];
      double c2 = a.cross(b);
 
      if( (c1*c2) < 0 ) return false;
@@ -426,7 +426,7 @@ bool miRegions::isCounterClockwise()
       miCoordinates b = corner[i+1] - corner[i];
       crossproduct= a.cross(b);
       if(crossproduct!=0)
-	break;
+        break;
     }
 
     return (crossproduct > 0);
@@ -479,7 +479,7 @@ bool miRegions::isCloseOrInside(const miCoordinates& a) const
 //   if(isInside(a))
 //     return true;
 
-  for(int i=0;i<corner.size();i++)
+  for (size_t i=0; i<corner.size(); i++)
     if(a==corner[i])
       return true;
   return false;
@@ -679,7 +679,6 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 
   vector<miCoordinates> oldcorners    = corner;
   set<miCoordinates>    oldcornerset  = cornerset;
-  int                   oldarea       = area_;
   vector<miRegions>     oldtriangles  = triangles_;
 
   // when  you join 2 regions with at least 3 corners
@@ -747,7 +746,7 @@ int miRegions::area()
 
   if(!area_) {
     vector<miRegions> t = triangles();
-    for(int i=0;i<t.size();i++)
+    for(size_t i=0;i<t.size();i++)
       area_+=t[i].area();
   }
 
@@ -777,7 +776,7 @@ bool miRegions::isInside( const miRegions& lhs, int threshold) const
 
   bool isCompleteInside=true;
 
-  for(int i=0; i<c.size();i++ )
+  for(size_t i=0; i<c.size(); i++)
     if(!isInside(c[i])) {
       isCompleteInside=false;
       break;
@@ -794,7 +793,7 @@ bool miRegions::isInside( const miRegions& lhs, int threshold) const
 
   float match=0;
 
-  for(int i=0;i<c.size(); i++ )
+  for (size_t i=0; i<c.size(); i++)
     if(isInside(c[i]))
       match+=1.0;
 
@@ -823,13 +822,13 @@ bool miRegions::cornerCompare( vector<miCoordinates> c) const
   if(c.size() != corner.size() )
     return false;
 
-  for(int i=0;i<c.size();i++)
+  for (size_t i=0; i<c.size(); i++)
     s.insert(c[i]);
 
   if(s.size() != corner.size() )
     return false;
 
-  for(int i=0;i<corner.size();i++)
+  for (size_t i=0; i<corner.size(); i++)
     if(!s.count(corner[i]))
       return false;
 
@@ -840,7 +839,6 @@ bool miRegions::cornerCompare( vector<miCoordinates> c) const
 
 bool miRegions::isIdentical( miRegions& lhs,int threshold) const
 {
-
   if(!isRegion() || !lhs.isRegion())
      return false;
 
@@ -882,7 +880,7 @@ bool miRegions::isIdentical( miRegions& lhs,int threshold) const
     }
 
   float match=0;
-  for(int i=0;i<gridPoints.size(); i++ )
+  for (size_t i=0; i<gridPoints.size(); i++)
     if(lhs.isInside(gridPoints[i]))
       match++;
 
@@ -906,7 +904,7 @@ bool miRegions::isIdentical( miRegions& lhs,int threshold) const
     }
 
   match=0;
-  for(int i=0;i<gridPoints.size(); i++ )
+  for (size_t i=0; i<gridPoints.size(); i++)
     if(isInside(gridPoints[i]))
       match++;
 

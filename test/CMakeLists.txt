@@ -15,6 +15,7 @@ ADD_EXECUTABLE(pudatatypes_test
 
 TARGET_LINK_LIBRARIES(pudatatypes_test
   pudatatypes
+  ${GTEST_LIBRARY}
   ${GTEST_MAIN_LIBRARY}
 )
 

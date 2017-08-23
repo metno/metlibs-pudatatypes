@@ -468,7 +468,7 @@ std::string miCoordinates::sLon()
 {
  std::ostringstream out;
  char lonp = ((iLon() < 0) ? 'W': 'E');
- out << abs(lon_.deg) << "\260 " // latin1 degree-sign
+ out << abs(lon_.deg) << "\u00B0 " // utf-8 degree-sign
      << fabs(float(lon_.cmin)/100)
      << "\'" << lonp;
  return out.str();
@@ -479,7 +479,7 @@ std::string miCoordinates::sLat()
 {
  std::ostringstream out;
  char latp = ((iLat() < 0) ? 'S': 'N');
- out << abs(lat_.deg) << "\260 " // latin1 degree-sign
+ out << abs(lat_.deg) << "\u00B0 " // utf-8 degree-sign
      << fabs(float(lat_.cmin)/100)
      << "\'" << latp;
  return out.str();

@@ -88,7 +88,6 @@ struct coor {
   int cmin;
 
   coor() : deg(0), cmin(0) {}
-  coor(const coor& c) : deg(c.deg), cmin(c.cmin) {}
   coor(const int&);
   coor(const float&);
 

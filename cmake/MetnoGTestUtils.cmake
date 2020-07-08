@@ -17,7 +17,21 @@ MACRO(METNO_FIND_GTEST)
     ENDIF()
     GET_FILENAME_COMPONENT(GTEST_DIR ${GTEST_DIR} PATH)
     GET_FILENAME_COMPONENT(GTEST_DIR ${GTEST_DIR} PATH)
+    IF(EXISTS "${GTEST_DIR}/../CMakeLists.txt")
+      # bionic, focal:
+      # - package 'googletest' includes googlemock
+      # - cmake complains if not using topmost CMakeLists.txt
+      GET_FILENAME_COMPONENT(GTEST_DIR ${GTEST_DIR} PATH)
+    ELSE()
+      # xenial:
+      # - package 'libgtest-dev' does not include googlemock
+      # - no extra subdirectory
+    ENDIF()
+
+    SET(BUILD_GMOCK OFF CACHE BOOL "do not build gmock" FORCE)
+    SET(BUILD_GTEST ON  CACHE BOOL "build gtest" FORCE)
     ADD_SUBDIRECTORY(${GTEST_DIR} ${CMAKE_CURRENT_BINARY_DIR}/gtest EXCLUDE_FROM_ALL)
+
     SET(GTEST_LIBRARY gtest)
     SET(GTEST_MAIN_LIBRARY gtest_main)
   ENDIF()

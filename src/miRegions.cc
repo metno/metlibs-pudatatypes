@@ -258,7 +258,7 @@ vector<miRegions> miRegions::triangles()
       break;
     }
 
-    if(++curr >= tcorners.size()) {
+    if(++curr >= (int)tcorners.size()) {
       curr=0;
       prev=tcorners.size()-1;
       next=1;
@@ -270,7 +270,7 @@ vector<miRegions> miRegions::triangles()
     if(prev<0)
       prev=tcorners.size()-1;
 
-    if( next >= tcorners.size() )
+    if( next >= (int)tcorners.size() )
       next=0;
 
     miCoordinates a = tcorners[curr] - tcorners[prev];
@@ -286,7 +286,7 @@ vector<miRegions> miRegions::triangles()
 
       bool inside=false;
 
-      for (int j=0;j<int(tcorners.size());j++)
+      for (int j=0;j<(int)tcorners.size();j++)
 	if(j!=prev && j!=curr && j!= next)
 	  if(tmp.isInside(tcorners[j])) {
 	    inside=true;
@@ -421,7 +421,7 @@ bool miRegions::isCounterClockwise()
   double crossproduct=0;
 
   if( isConvex() ) {
-    for(int i=1;i<corner.size()-2;i++) {
+    for(size_t i=1;i<corner.size()-2;i++) {
       miCoordinates a = corner[i] - corner[i-1];
       miCoordinates b = corner[i+1] - corner[i];
       crossproduct= a.cross(b);
@@ -432,7 +432,7 @@ bool miRegions::isCounterClockwise()
     return (crossproduct > 0);
   }
   double A=0;
-  int    i=0;
+  size_t i=0;
 
   // for concav polygons, the sum of the polygon areas has
   // to be positive to be counter clockwise
@@ -515,7 +515,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
   miRegions firstR  = lhs;
   miRegions secondR = rhs;
 
-  int f;
+  size_t f;
 
   bool foundcorner=false;
 
@@ -543,7 +543,6 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
     }
   }
 
-  miBoundaryBox fFuzzy   = firstR.getFuzzyBoundary(0.2);
   miBoundaryBox sFuzzy   = secondR.getFuzzyBoundary(0.2);
 
 
@@ -562,9 +561,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 
   list<miCoordinates> res;
 
-  int s1,s2;
-  int f1,f2;
-
+  size_t s1, s2;
 
   // start at the corner in firstc which is definitly outside
   // secondc. try to find the point where firstc and secondc crosses
@@ -572,7 +569,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 
   miCoordinates firstcross1,firstcross2;
 
-  for(f1=f;f1<firstc.size();f1++) {
+  for(size_t f1=f;f1<firstc.size();f1++) {
     res.push_back(firstc[f1]);
     if(sFuzzy.isInside(firstc[f1]))
       for(s1=0;s1<secondc.size();s1++) {
@@ -599,7 +596,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
   // check first that there is enought space between first cross and second cross...
 
 
-  for(f2=f-1;f2>=0;f2--) {
+  for(int f2=f-1;f2>=0;f2--) {
     res.push_front(firstc[f2]);
 
     if(sFuzzy.isInside(firstc[f2])) {
@@ -626,7 +623,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 
 
   if(!foundcross2) {
-    for(f2=firstc.size()-1;f2>=0;f2--) {
+    for(int f2=firstc.size()-1;f2>=0;f2--) {
       res.push_front(firstc[f2]);
 
       if(sFuzzy.isInside(firstc[f2]))
@@ -665,7 +662,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
 
   bool complete=false;
 
-  for(int s=s1;s<secondc.size();s++ ) {
+  for(size_t s=s1;s<secondc.size();s++ ) {
     res.push_back(secondc[s]);
     if(s==s2) {
       complete=true;
@@ -674,7 +671,7 @@ bool miRegions::join(miRegions lhs,miRegions rhs,int tolerance)
   }
 
   if(!complete)
-    for(int s=0;s<=s2;s++ )
+    for(size_t s=0;s<=s2;s++ )
       res.push_back(secondc[s]);
 
   vector<miCoordinates> oldcorners    = corner;

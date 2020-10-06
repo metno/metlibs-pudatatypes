@@ -1,3 +1,9 @@
+metlibs-common-pudatatypes (6.0.3-1) xenial; urgency=medium
+
+  * fix build for Ubuntu 20.04
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Tue, 6 Oct 2020 08:00:08 +0200
+
 metlibs-common-pudatatypes (6.0.2-2) xenial; urgency=medium
 
   * version number in shlibs

@@ -17,6 +17,7 @@ TARGET_LINK_LIBRARIES(pudatatypes_test
   pudatatypes
   ${GTEST_LIBRARY}
   ${GTEST_MAIN_LIBRARY}
+  Threads::Threads
 )
 
 ADD_TEST(NAME pudatatypes_test

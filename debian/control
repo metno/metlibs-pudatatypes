@@ -1,8 +1,8 @@
 Source: metlibs-common-pudatatypes
 Priority: optional
 Maintainer: MET Norway <diana@met.no>
-Build-Depends: debhelper (>= 9),
- cmake,
+Build-Depends: debhelper (>= 11),
+ cmake (>= 3.10),
  libboost-dev,
  pkg-config,
  libgtest-dev
